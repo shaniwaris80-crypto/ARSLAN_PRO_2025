@@ -1,59 +1,101 @@
+// --- ARSLAN PRO 2025 — Módulo principal de facturación avanzada ---
+
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".menu button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".menu button").forEach(b => b.classList.remove("active"));
-      document.querySelectorAll("section.tab").forEach(t => t.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById(btn.dataset.tab).classList.add("active");
-    });
+  const out = document.getElementById("output");
+  const addBtn = document.getElementById("btn-add");
+  const totalSpan = document.getElementById("total");
+  const descInput = document.getElementById("desc");
+  const ivaCheck = document.getElementById("iva");
+  const recargoCheck = document.getElementById("recargo");
+  const transpCheck = document.getElementById("transporte");
+
+  let FACTURA = [];
+
+  // === Helpers ===
+  const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+  const load = (k) => JSON.parse(localStorage.getItem(k) || "[]");
+
+  // === Cargar datos iniciales ===
+  let CATALOGO = load("catalogo");
+  let CLIENTES = load("clientes");
+
+  // === Añadir producto ===
+  addBtn.addEventListener("click", () => {
+    const name = prompt("Producto:");
+    if (!name) return;
+    const base = CATALOGO.find(p => p.name.includes(name.toUpperCase())) || {};
+    const qty = parseFloat(prompt("Cantidad:", 1)) || 1;
+    const precio = parseFloat(prompt("Precio €/unidad:", base.precio || 0)) || 0;
+    const iva = base.iva || 4;
+    const unit = base.unit || "kg";
+
+    FACTURA.push({ name, qty, precio, iva, unit });
+    render();
   });
 
-  const fecha = new Date();
-  document.getElementById("fecha").textContent =
-    fecha.toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" });
-
-  const cuerpo = document.getElementById("lineas");
-  const subtotal = document.getElementById("subtotal");
-  const iva = document.getElementById("iva");
-  const total = document.getElementById("total");
-
-  function recalcular() {
-    let st = 0;
-    cuerpo.querySelectorAll("tr").forEach(tr => {
-      const cant = parseFloat(tr.querySelector(".cant").value) || 0;
-      const precio = parseFloat(tr.querySelector(".precio").value) || 0;
-      const imp = cant * precio;
-      tr.querySelector(".importe").textContent = imp.toFixed(2);
-      st += imp;
+  // === Renderizar factura ===
+  function render() {
+    out.innerHTML = "";
+    let subtotal = 0;
+    FACTURA.forEach((p, i) => {
+      const lineTotal = p.qty * p.precio;
+      subtotal += lineTotal;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${p.name}</td>
+        <td>${p.qty}</td>
+        <td>${p.unit}</td>
+        <td>${p.precio.toFixed(2)} €</td>
+        <td>${(p.qty * p.precio).toFixed(2)} €</td>`;
+      out.appendChild(tr);
     });
-    const ivaCalc = st * 0.04;
-    subtotal.textContent = st.toFixed(2);
-    iva.textContent = ivaCalc.toFixed(2);
-    total.textContent = (st + ivaCalc).toFixed(2);
+
+    let descuento = parseFloat(descInput.value) || 0;
+    let total = subtotal * (1 - descuento / 100);
+
+    // IVA + Recargo
+    if (ivaCheck.checked) total *= 1.04;
+    if (recargoCheck.checked) total *= 1.014;
+
+    // Transporte
+    if (transpCheck.checked) total *= 1.10;
+
+    totalSpan.textContent = total.toFixed(2) + " €";
   }
 
-  document.getElementById("agregar").addEventListener("click", () => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><input class="prod" placeholder="Producto"></td>
-      <td><select><option>kg</option><option>caja</option><option>ud</option></select></td>
-      <td><input class="peso" type="number" min="0" step="0.01" value="0"></td>
-      <td><input class="cant" type="number" min="0" step="1" value="0"></td>
-      <td><input class="precio" type="number" min="0" step="0.01" value="0"></td>
-      <td><input class="iva" type="number" min="0" max="21" step="1" value="4"></td>
-      <td class="importe">0.00</td>
-      <td><button class="del">❌</button></td>`;
-    cuerpo.appendChild(tr);
-    tr.querySelectorAll("input").forEach(i => i.addEventListener("input", recalcular));
-    tr.querySelector(".del").addEventListener("click", () => { tr.remove(); recalcular(); });
+  // === Controles ===
+  [descInput, ivaCheck, recargoCheck, transpCheck].forEach(el => {
+    el.addEventListener("input", render);
+    el.addEventListener("change", render);
   });
 
-  document.getElementById("limpiar").addEventListener("click", () => {
-    cuerpo.innerHTML = "";
-    recalcular();
+  // === Copia de seguridad ===
+  document.getElementById("bk-export").addEventListener("click", () => {
+    const payload = { facturas: load("facturas"), catalogo: CATALOGO, clientes: CLIENTES };
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
+    a.download = `backup_ARSLANPRO_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
   });
 
-  document.getElementById("guardar").addEventListener("click", () => {
-    alert("✅ Factura guardada (modo demostración).");
+  document.getElementById("bk-import").addEventListener("click", () => {
+    document.getElementById("bk-file").click();
   });
+
+  document.getElementById("bk-file").addEventListener("change", async e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    try {
+      const obj = JSON.parse(await f.text());
+      if (obj.facturas) save("facturas", obj.facturas);
+      if (obj.catalogo) save("catalogo", obj.catalogo);
+      if (obj.clientes) save("clientes", obj.clientes);
+      alert("✅ Copia restaurada correctamente.");
+    } catch {
+      alert("❌ Archivo inválido.");
+    }
+  });
+
+  render();
 });
