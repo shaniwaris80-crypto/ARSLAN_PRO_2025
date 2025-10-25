@@ -1,28 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>ARSLAN PRO 2025</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARSLAN PRO 2025 — Gestión y Facturación</title>
+  <link rel="stylesheet" href="assets/style.css" />
   <script defer src="scripts/main.js"></script>
 </head>
 <body>
-  <header>
-    <h1>ARSLAN PRO 2025</h1>
-    <p>Software profesional de gestión y facturación para fruterías 🍎</p>
+  <header class="topbar">
+    <h1>💚 ARSLAN PRO 2025</h1>
+    <span id="fecha"></span>
   </header>
 
-  <main id="app">
-    <button id="nueva-factura">🧾 Nueva factura</button>
-    <button id="clientes">👥 Clientes</button>
-    <button id="catalogo">📦 Catálogo</button>
-    <button id="ajustes">⚙️ Ajustes</button>
-  </main>
+  <nav class="menu">
+    <button data-tab="facturar" class="active">🧾 Facturar</button>
+    <button data-tab="clientes">👥 Clientes</button>
+    <button data-tab="catalogo">📦 Catálogo</button>
+    <button data-tab="facturas">📚 Historial</button>
+    <button data-tab="ajustes">⚙️ Ajustes</button>
+  </nav>
 
-  <footer>
-    <p>© 2025 Mohammad Arslan Waris — Todos los derechos reservados</p>
-  </footer>
+  <main>
+    <section id="facturar" class="tab active">
+      <h2>Nueva factura</h2>
+      <div class="row">
+        <input id="cliente" placeholder="Cliente" />
+        <input id="nif" placeholder="NIF/CIF" />
+        <input id="direccion" placeholder="Dirección" />
+      </div>
+      <table id="tabla">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Unidad</th>
+            <th>Peso fijo</th>
+            <th>Cant.</th>
+            <th>Precio</th>
+            <th>IVA%</th>
+            <th>Importe €</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="lineas"></tbody>
+        <tfoot>
+          <tr><td colspan="6" class="right">Subtotal</td><td id="subtotal">0.00</td></tr>
+          <tr><td colspan="6" class="right">IVA (4 %)</td><td id="iva">0.00</td></tr>
+          <tr><td colspan="6" class="right grand">TOTAL</td><td id="total">0.00</td></tr>
+        </tfoot>
+      </table>
+      <div class="buttons">
+        <button id="agregar">➕ Línea</button>
+        <button id="guardar">💾 Guardar</button>
+        <button id="limpiar">🧹 Limpiar</button>
+      </div>
+    </section>
+
+    <section id="clientes" class="tab">
+      <h2>Clientes registrados</h2>
+      <table id="tabla-clientes">
+        <thead><tr><th>Nombre</th><th>NIF</th><th>Dirección</th><th>Total facturado</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="catalogo" class="tab">
+      <h2>Catálogo de productos</h2>
+      <p>Productos habituales con IVA y pesos predefinidos.</p>
+      <table id="tabla-catalogo">
+        <thead><tr><th>Producto</th><th>Unidad</th><th>Peso fijo kg</th><th>IVA %</th><th>Histórico €</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="facturas" class="tab">
+      <h2>Historial de facturas</h2>
+      <table id="tabla-facturas">
+        <thead><tr><th>Número</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="ajustes" class="tab">
+      <h2>Ajustes generales</h2>
+      <p>Versión 10 — © 2025 Mohammad Arslan Waris</p>
+      <p>IVA por defecto: 4 %  |  Tienda predeterminada: San Pablo 🍏</p>
+    </section>
+  </main>
 </body>
 </html>
-<h1>ARSLAN PRO 2025</h1>
