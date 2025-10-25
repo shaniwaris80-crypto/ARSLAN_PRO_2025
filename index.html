@@ -7,6 +7,7 @@
 </head>
 <body>
 <h1>🥝 ARSLAN PRO 2025</h1>
+
 <section>
   <button id="btn-add">➕ Añadir producto</button>
   <label>Descuento (%): <input id="desc" type="number" value="0" min="0" max="100"></label>
@@ -28,8 +29,14 @@
   <input type="file" id="bk-file" hidden>
 </section>
 
+<section>
+  <button id="btn-pdf" class="primary">🧾 Generar PDF</button>
+</section>
+
 <script src="scripts/catalogo.js"></script>
 <script src="scripts/clientes.js"></script>
 <script src="scripts/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="scripts/pdf.js"></script>
 </body>
 </html>
