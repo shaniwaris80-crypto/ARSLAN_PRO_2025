@@ -3,7 +3,7 @@ let CATALOGO = [];
 
 async function cargarCatalogo() {
   try {
-    const resp = await fetch('../data/catalogo.json', { cache: 'no-store' });
+    const resp = await fetch('data/catalogo.json', { cache: 'no-store' });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     CATALOGO = await resp.json();
     CATALOGO = CATALOGO.map(p => ({

@@ -3,7 +3,7 @@ let CLIENTES = [];
 
 async function cargarClientes() {
   try {
-    const resp = await fetch('../data/clientes.json', { cache: 'no-store' });
+    const resp = await fetch('data/clientes.json', { cache: 'no-store' });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     CLIENTES = await resp.json();
     CLIENTES = CLIENTES.map(c => ({
