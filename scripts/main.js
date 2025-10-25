@@ -1,5 +1,6 @@
 // --- ARSLAN PRO 2025 — Módulo principal de facturación avanzada ---
 
+// --- ARSLAN PRO 2025 — Facturación avanzada ---
 document.addEventListener("DOMContentLoaded", () => {
   const out = document.getElementById("output");
   const addBtn = document.getElementById("btn-add");
@@ -11,15 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let FACTURA = [];
 
-  // === Helpers ===
   const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
   const load = (k) => JSON.parse(localStorage.getItem(k) || "[]");
 
-  // === Cargar datos iniciales ===
   let CATALOGO = load("catalogo");
   let CLIENTES = load("clientes");
 
-  // === Añadir producto ===
   addBtn.addEventListener("click", () => {
     const name = prompt("Producto:");
     if (!name) return;
@@ -33,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   });
 
-  // === Renderizar factura ===
   function render() {
     out.innerHTML = "";
     let subtotal = 0;
@@ -54,23 +51,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let descuento = parseFloat(descInput.value) || 0;
     let total = subtotal * (1 - descuento / 100);
 
-    // IVA + Recargo
     if (ivaCheck.checked) total *= 1.04;
     if (recargoCheck.checked) total *= 1.014;
-
-    // Transporte
     if (transpCheck.checked) total *= 1.10;
 
     totalSpan.textContent = total.toFixed(2) + " €";
   }
 
-  // === Controles ===
   [descInput, ivaCheck, recargoCheck, transpCheck].forEach(el => {
     el.addEventListener("input", render);
     el.addEventListener("change", render);
   });
 
-  // === Copia de seguridad ===
   document.getElementById("bk-export").addEventListener("click", () => {
     const payload = { facturas: load("facturas"), catalogo: CATALOGO, clientes: CLIENTES };
     const a = document.createElement("a");
@@ -96,6 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("❌ Archivo inválido.");
     }
   });
+
+  document.getElementById("btn-pdf").addEventListener("click", generarPDF);
 
   render();
 });
