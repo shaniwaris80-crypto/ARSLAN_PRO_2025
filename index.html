@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ARSLAN LISTAS v3.6 — KIWI MOBILE + SUPABASE</title>
+<title>ARSLAN LISTAS v3.8 — KIWI MOBILE + SUPABASE + LOGO</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!-- Supabase JS v2 -->
@@ -27,6 +27,7 @@
   .btn.muted{background:#fff;border:1px solid var(--border);color:var(--ink)}
   .btn.small{padding:6px 10px;font-size:13px}
   textarea{width:100%;min-height:120px;border:1px solid var(--border);border-radius:12px;padding:10px;resize:vertical;font-size:14px}
+  input[type="text"], input[type="number"], select{border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:14px}
   table{width:100%;border-collapse:collapse}
   th,td{border-bottom:1px solid var(--border);padding:8px;text-align:left;font-size:14px;vertical-align:top}
   th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0;background:#fff}
@@ -53,18 +54,48 @@
   @media(min-width:980px){.grid-3{grid-template-columns:repeat(3,1fr)}}
   .status{font-size:12px;color:#166534}
   .status.err{color:#b91c1c}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand svg{width:34px;height:34px}
+  .chip{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border:1px solid var(--border);border-radius:999px;background:#fff}
 </style>
 </head>
 <body>
   <div class="container">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h1>🍈 ARSLAN LISTAS v3.6 — KIWI MOBILE + SUPABASE</h1>
+      <div class="brand">
+        <!-- SVG KIWI LOGO: círculo verde con semillas -->
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="Kiwi logo">
+          <defs>
+            <radialGradient id="g" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#a7f3d0"/>
+              <stop offset="60%" stop-color="#22c55e"/>
+              <stop offset="100%" stop-color="#15803d"/>
+            </radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="url(#g)" stroke="#065f46" stroke-width="4"/>
+          <circle cx="50" cy="50" r="14" fill="#fefce8" stroke="#f59e0b" stroke-width="2"/>
+          <!-- semillas -->
+          <g fill="#111827">
+            <ellipse cx="50" cy="30" rx="2" ry="4"/>
+            <ellipse cx="65" cy="35" rx="2" ry="4" transform="rotate(25 65 35)"/>
+            <ellipse cx="72" cy="48" rx="2" ry="4" transform="rotate(60 72 48)"/>
+            <ellipse cx="65" cy="63" rx="2" ry="4" transform="rotate(95 65 63)"/>
+            <ellipse cx="50" cy="70" rx="2" ry="4"/>
+            <ellipse cx="35" cy="63" rx="2" ry="4" transform="rotate(-95 35 63)"/>
+            <ellipse cx="28" cy="48" rx="2" ry="4" transform="rotate(-60 28 48)"/>
+            <ellipse cx="35" cy="35" rx="2" ry="4" transform="rotate(-25 35 35)"/>
+          </g>
+        </svg>
+        <h1>🍈 ARSLAN LISTAS v3.8 — KIWI MOBILE + SUPABASE</h1>
+      </div>
       <div class="toolbar">
         <button class="btn ghost" onclick="manualSync()">🔁 Sincronizar</button>
+        <button class="btn" onclick="terminarTarea()">🧹 Terminar Tarea</button>
         <span id="syncStatus" class="status">Sincronizado</span>
       </div>
     </div>
-    <div class="hint" style="margin-bottom:10px">Flujo: Diccionario → Tiendas (Estandarizar/Guardar) → Global (Unificar/Asignar/WhatsApp) → Proveedores (TXT/WhatsApp)</div>
+    <div class="hint" style="margin-bottom:10px">Flujo: Diccionario → Tiendas → Global → Proveedores → Compras → Reparto → <b>Terminar Tarea</b></div>
 
     <!-- ========== TAB: Diccionario ========== -->
     <section class="tab" id="tab-dic">
@@ -78,7 +109,7 @@
           </div>
         </div>
         <div class="bd">
-          <div class="hint" style="margin-bottom:6px">Un producto por línea. Se normaliza a <b>MAYÚSCULAS</b> sin tildes. Sin duplicados.</div>
+          <div class="hint" style="margin-bottom:6px">Un producto por línea. Se normaliza a <b>MAYÚSCULAS</b> sin tildes. Sin duplicados. <span class="chip">Auto-sync: ON</span></div>
           <textarea id="vocabTxt"></textarea>
         </div>
       </div>
@@ -92,13 +123,12 @@
           <div class="hd"><strong>🏪 San Pablo</strong>
             <div class="toolbar">
               <button class="btn ghost" onclick="estandarizar('sp')">Estandarizar</button>
-              <button class="btn" onclick="guardarTienda('sp')">Guardar tienda</button>
               <button class="btn muted" onclick="exportarTiendaTXT('sp')">📄 TXT</button>
             </div>
           </div>
           <div class="bd">
             <textarea id="in_sp" placeholder="Pega lista San Pablo...&#10;Ej.: 3 cajas tomate daniela&#10;zanahoria 2&#10;aguacate granel 4"></textarea>
-            <div class="hint">Edita en la tabla: OK = verde, Revisar = rojo. Sugerencias al escribir.</div>
+            <div class="hint">Edita en la tabla: OK = verde, Revisar = rojo. Sugerencias al escribir. <span class='chip'>Auto-sync: ON</span></div>
             <div id="tbl_sp_wrap" class="scroll-x" style="margin-top:8px"></div>
           </div>
         </div>
@@ -107,13 +137,12 @@
           <div class="hd"><strong>🏪 San Lesmes</strong>
             <div class="toolbar">
               <button class="btn ghost" onclick="estandarizar('sl')">Estandarizar</button>
-              <button class="btn" onclick="guardarTienda('sl')">Guardar tienda</button>
               <button class="btn muted" onclick="exportarTiendaTXT('sl')">📄 TXT</button>
             </div>
           </div>
           <div class="bd">
             <textarea id="in_sl" placeholder="Pega lista San Lesmes..."></textarea>
-            <div class="hint">Edita en la tabla: OK = verde, Revisar = rojo. Sugerencias al escribir.</div>
+            <div class="hint">Edita en la tabla: OK = verde, Revisar = rojo. Sugerencias al escribir. <span class='chip'>Auto-sync: ON</span></div>
             <div id="tbl_sl_wrap" class="scroll-x" style="margin-top:8px"></div>
           </div>
         </div>
@@ -122,13 +151,12 @@
           <div class="hd"><strong>🏪 Santiago</strong>
             <div class="toolbar">
               <button class="btn ghost" onclick="estandarizar('st')">Estandarizar</button>
-              <button class="btn" onclick="guardarTienda('st')">Guardar tienda</button>
               <button class="btn muted" onclick="exportarTiendaTXT('st')">📄 TXT</button>
             </div>
           </div>
           <div class="bd">
             <textarea id="in_st" placeholder="Pega lista Santiago..."></textarea>
-            <div class="hint">Edita en la tabla: OK = verde, Revisar = rojo. Sugerencias al escribir.</div>
+            <div class="hint">Edita en la tabla: OK = verde, Revisar = rojo. Sugerencias al escribir. <span class='chip'>Auto-sync: ON</span></div>
             <div id="tbl_st_wrap" class="scroll-x" style="margin-top:8px"></div>
           </div>
         </div>
@@ -149,13 +177,11 @@
           </div>
         </div>
         <div class="bd">
-          <div class="hint">✅ a la izquierda asigna al proveedor activo. Duplicados probables se <span class="red">marcan en rojo</span> y fila rosada (<b>⚠️</b>).</div>
-          <div class="card" style="margin-top:8px">
-            <div class="bd">
-              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-                <span class="hint">Proveedor activo:</span>
-                <div class="prov-bar" id="provBar"></div>
-              </div>
+          <div class="card" style="margin-bottom:8px">
+            <div class="bd row">
+              <span class="hint">Proveedor activo:</span>
+              <div class="prov-bar" id="provBar"></div>
+              <span class="hint">✅ asigna rápido. Duplicados en <span class="red">rojo</span>.</span>
             </div>
           </div>
           <div id="global_wrap" class="scroll-x" style="margin-top:8px"></div>
@@ -172,6 +198,47 @@
         </div>
       </div>
     </section>
+
+    <!-- ========== TAB: Compras (nuevo) ========== -->
+    <section class="tab" id="tab-compras" style="display:none">
+      <div class="card">
+        <div class="hd">
+          <strong>🛒 Compras realizadas</strong>
+          <div class="toolbar">
+            <button class="btn small" onclick="marcarCompradoDesdeGlobal()">+ Añadir seleccionados del Global</button>
+            <button class="btn ghost small" onclick="supaReplaceComprasLocal()">Guardar en Supabase</button>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="hint" style="margin-bottom:8px">Puedes añadir manualmente compras libres (producto, cantidad y proveedor opcional). <span class='chip'>Auto-sync: ON</span></div>
+          <div class="row" style="margin-bottom:10px">
+            <input id="buy_name" type="text" placeholder="PRODUCTO" style="flex:2;min-width:180px" />
+            <input id="buy_qty" type="number" placeholder="CANTIDAD" step="0.01" style="width:120px" />
+            <input id="buy_prov" type="text" placeholder="PROVEEDOR (opcional)" style="flex:1;min-width:140px" />
+            <button class="btn" onclick="addCompraManual()">Añadir</button>
+          </div>
+          <div id="compras_wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TAB: Reparto (nuevo) ========== -->
+    <section class="tab" id="tab-reparto" style="display:none">
+      <div class="card">
+        <div class="hd">
+          <strong>🏪 Reparto por tienda (solo productos comprados)</strong>
+          <div class="toolbar">
+            <button class="btn small" onclick="rebuildRepartoFromCompras()">Refrescar desde Compras</button>
+            <button class="btn ghost small" onclick="supaReplaceRepartoLocal()">Guardar reparto en Supabase</button>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="hint" style="margin-bottom:8px">Introduce las cantidades para cada tienda. Los productos no comprados no aparecen aquí. <span class='chip'>Auto-sync: ON</span></div>
+          <div id="reparto_wrap" class="grid-3"></div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <!-- Tabbar móvil -->
@@ -180,6 +247,8 @@
     <button id="btn-tiendas" onclick="showTab('tiendas')">🏪<span>Tiendas</span></button>
     <button id="btn-global" onclick="showTab('global')">🧮<span>Global</span></button>
     <button id="btn-proveedores" onclick="showTab('proveedores')">📦<span>Proveedores</span></button>
+    <button id="btn-compras" onclick="showTab('compras')">🛒<span>Compras</span></button>
+    <button id="btn-reparto" onclick="showTab('reparto')">🏪<span>Reparto</span></button>
   </nav>
 
 <script>
@@ -187,13 +256,15 @@
    Tabs
 ========================== */
 function showTab(key){
-  const ids = ['dic','tiendas','global','proveedores'];
+  const ids = ['dic','tiendas','global','proveedores','compras','reparto'];
   ids.forEach(k=>{
     document.getElementById('tab-'+k).style.display = (k===key)?'block':'none';
     document.getElementById('btn-'+k).classList.toggle('active', k===key);
   });
   if(key==='global'){ unificarGlobal(); buildProvBar(); }
   if(key==='proveedores'){ renderProvidersPanels(); }
+  if(key==='compras'){ renderCompras(); }
+  if(key==='reparto'){ renderReparto(); }
 }
 
 /* ==========================
@@ -204,13 +275,20 @@ const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 const SUPA = {
   vocab: 'vocabulario',
-  tiendas: 'tiendas_estandarizadas'
+  tiendas: 'tiendas_estandarizadas',
+  compras: 'compras_realizadas',
+  reparto: 'reparto_realizado'
 };
 const syncSpan = document.getElementById('syncStatus');
 function setSyncStatus(msg, ok=true){
   syncSpan.textContent = msg;
   syncSpan.classList.toggle('err', !ok);
 }
+
+// Debounce helper para autosync
+function debounce(fn, wait){ let t; return function(...args){ clearTimeout(t); t=setTimeout(()=>fn.apply(this,args), wait); }; }
+const autoSyncVocab = debounce(async ()=>{ await saveVocab(); }, 600);
+const autoSyncStore = debounce(async (code)=>{ await supaReplaceStore(code, tiendaState[code]||[]); }, 600);
 
 /* ====== Supabase: Vocab ====== */
 async function supaFetchVocab(){
@@ -220,14 +298,13 @@ async function supaFetchVocab(){
   return data.map(r => r.termino);
 }
 async function supaReplaceVocab(list){
-  // Reemplazo total: vaciar y reinsertar
   const { error: delErr } = await supa.from(SUPA.vocab).delete().neq('termino','__KEEP__');
   if(delErr){ setSyncStatus('Vocab: error al limpiar', false); return false; }
   if(!list.length){ setSyncStatus('Vocab vacío (limpiado)'); return true; }
   const payload = list.map(t => ({ termino: t }));
   const { error: insErr } = await supa.from(SUPA.vocab).insert(payload);
   if(insErr){ setSyncStatus('Vocab: error al insertar', false); return false; }
-  setSyncStatus('Vocab guardado en Supabase');
+  setSyncStatus('Vocab guardado');
   return true;
 }
 
@@ -241,10 +318,9 @@ async function supaFetchTiendas(){
   return data;
 }
 async function supaReplaceStore(code, rows){
-  // Eliminar todo lo de esa tienda y reinsertar
   const { error: delErr } = await supa.from(SUPA.tiendas).delete().eq('tienda', code);
   if(delErr){ setSyncStatus(code.toUpperCase()+': error al limpiar', false); return false; }
-  if(!rows.length){ setSyncStatus(code.toUpperCase()+': sin filas (quedó vacío)'); return true; }
+  if(!rows.length){ setSyncStatus(code.toUpperCase()+': sin filas (vacío)'); return true; }
   const payload = rows.map(r => ({
     tienda: code,
     producto: r.e,
@@ -254,13 +330,48 @@ async function supaReplaceStore(code, rows){
   }));
   const { error: insErr } = await supa.from(SUPA.tiendas).insert(payload);
   if(insErr){ setSyncStatus(code.toUpperCase()+': error al insertar', false); return false; }
-  setSyncStatus(code.toUpperCase()+': guardado en Supabase');
+  setSyncStatus(code.toUpperCase()+': guardado');
+  return true;
+}
+
+/* ====== Supabase: Compras ====== */
+async function supaFetchCompras(){
+  const { data, error } = await supa.from(SUPA.compras).select('producto,cantidad,proveedor,comprado_en').order('comprado_en',{ascending:true});
+  if(error){ setSyncStatus('Compras: error al descargar', false); return null; }
+  return data||[];
+}
+async function supaReplaceCompras(list){
+  const { error: delErr } = await supa.from(SUPA.compras).delete().neq('producto','__KEEP__');
+  if(delErr){ setSyncStatus('Compras: error al limpiar', false); return false; }
+  if(!list.length){ setSyncStatus('Compras vacías'); return true; }
+  const payload = list.map(x=>({producto:x.name,cantidad:Number(x.qty)||0,proveedor:x.prov||null}));
+  const { error: insErr } = await supa.from(SUPA.compras).insert(payload);
+  if(insErr){ setSyncStatus('Compras: error al insertar', false); return false; }
+  setSyncStatus('Compras guardadas');
+  return true;
+}
+
+/* ====== Supabase: Reparto ====== */
+async function supaFetchReparto(){
+  const { data, error } = await supa.from(SUPA.reparto).select('tienda,producto,cantidad,repartido_en').order('repartido_en',{ascending:true});
+  if(error){ setSyncStatus('Reparto: error al descargar', false); return null; }
+  return data||[];
+}
+async function supaReplaceReparto(list){
+  const { error: delErr } = await supa.from(SUPA.reparto).delete().neq('producto','__KEEP__');
+  if(delErr){ setSyncStatus('Reparto: error al limpiar', false); return false; }
+  if(!list.length){ setSyncStatus('Reparto vacío'); return true; }
+  const payload = list.map(x=>({tienda:x.tienda, producto:x.producto, cantidad:Number(x.cantidad)||0}));
+  const { error: insErr } = await supa.from(SUPA.reparto).insert(payload);
+  if(insErr){ setSyncStatus('Reparto: error al insertar', false); return false; }
+  setSyncStatus('Reparto guardado');
   return true;
 }
 
 /* ====== Sincronización manual (descarga) ====== */
 async function manualSync(){
   setSyncStatus('Sincronizando...');
+
   // Vocab
   const sv = await supaFetchVocab();
   if(sv && sv.length){
@@ -268,10 +379,10 @@ async function manualSync(){
     byId('vocabTxt').value = unique.join('\n');
     localStorage.setItem(LS.VOCAB, byId('vocabTxt').value);
   }
+
   // Tiendas
   const st = await supaFetchTiendas();
   if(st){
-    // reconstruir tiendaState por code
     const map = { sp:[], sl:[], st:[] };
     st.forEach(r=>{
       map[r.tienda]?.push({
@@ -287,6 +398,25 @@ async function manualSync(){
     unificarGlobal();
     renderProvidersPanels();
   }
+
+  // Compras
+  const comp = await supaFetchCompras();
+  if(comp){
+    purchases = comp.map(r=>({name:removeDiacriticsUpper(r.producto), qty:Number(r.cantidad)||0, prov: r.proveedor||''}));
+    persistState();
+    renderCompras();
+  }
+
+  // Reparto
+  const rep = await supaFetchReparto();
+  if(rep){
+    reparto = {sp:[], sl:[], st:[]};
+    rep.forEach(r=>{
+      if(reparto[r.tienda]) reparto[r.tienda].push({name:removeDiacriticsUpper(r.producto), qty:Number(r.cantidad)||0});
+    });
+    persistState(); renderReparto();
+  }
+
   setSyncStatus('Sincronizado');
 }
 
@@ -294,10 +424,12 @@ async function manualSync(){
    Config y utilidades
 ========================== */
 const LS = {
-  VOCAB:'arslan_v36_vocab',
-  STORES:'arslan_v36_stores',
-  ASSIGN:'arslan_v36_assign',
-  ORDERS:'arslan_v36_orders'
+  VOCAB:'arslan_v38_vocab',
+  STORES:'arslan_v38_stores',
+  ASSIGN:'arslan_v38_assign',
+  ORDERS:'arslan_v38_orders',
+  COMPRAS:'arslan_v38_compras',
+  REPARTO:'arslan_v38_reparto'
 };
 const PROVEEDORES = ["ESMO","MONTENEGRO","ÁNGEL VACA","JOSÉ ANTONIO","JAVI","ANGELO"];
 const IGNORE_WORDS = ['caja','cajas','kg','kilo','kilos','uds','ud','u','unidad','unidades','manojo','manojos','saco','sacos'];
@@ -538,10 +670,12 @@ function addNewWord(){
   const added = toLines(entry);
   const merged = uniqueVocab(current.concat(added));
   byId('vocabTxt').value = merged.join('\n');
+  autoSyncVocab();
 }
+byId('vocabTxt').addEventListener('input', autoSyncVocab);
 
 /* ==========================
-   Coincidencia aproximada
+   Coincidencia aproximada (mejorada)
 ========================== */
 function bigrams(str){
   const s = stripGenericWords(str);
@@ -579,7 +713,7 @@ function bestMatch(query, vocabArr){
 function parseLine(raw){
   if(!raw) return null;
   let s = raw.replace(/\t/g,' ').replace(/\s{2,}/g,' ').trim();
-  s = s.replace(/^[-•*]\s*/,'');
+  s = s.replace(/^[−-•*]\s*/,'');
   let qty=null, name=s;
 
   const mX = s.match(/(?:x|X|\*)\s*(\d+[\.,]?\d*)\b/);
@@ -606,6 +740,8 @@ const tiendaState = { sp:[], sl:[], st:[] }; // [{o,e,q,a}]
 let globalRows = [];                          // [{name,total}]
 let assignments = {};                         // { normKey(name) : proveedor }
 let orders = {};                              // { proveedor : [{name, qty}] }
+let purchases = [];                           // [{name, qty, prov}]
+let reparto = { sp:[], sl:[], st:[] };       // por tienda: [{name, qty}]
 let ACTIVE_PROV = PROVEEDORES[0];
 
 function loadState(){
@@ -621,19 +757,29 @@ function loadState(){
     const o = JSON.parse(localStorage.getItem(LS.ORDERS)||'{}');
     orders = o||{};
   }catch{}
+  try{
+    const c = JSON.parse(localStorage.getItem(LS.COMPRAS)||'[]');
+    purchases = Array.isArray(c)? c : [];
+  }catch{}
+  try{
+    const r = JSON.parse(localStorage.getItem(LS.REPARTO)||'{}');
+    reparto = r && typeof r==='object'? r : {sp:[],sl:[],st:[]};
+  }catch{}
   PROVEEDORES.forEach(p=>{ if(!Array.isArray(orders[p])) orders[p]=[]; });
 }
 function persistState(){
   localStorage.setItem(LS.STORES, JSON.stringify(tiendaState));
   localStorage.setItem(LS.ASSIGN, JSON.stringify(assignments));
   localStorage.setItem(LS.ORDERS, JSON.stringify(orders));
+  localStorage.setItem(LS.COMPRAS, JSON.stringify(purchases));
+  localStorage.setItem(LS.REPARTO, JSON.stringify(reparto));
 }
 function resetAll(){
   if(confirm('¿Seguro que quieres limpiar todo?')){ localStorage.clear(); location.reload(); }
 }
 
 /* ==========================
-   Estandarizar por tienda
+   Estandarizar por tienda (AUTO-SYNC)
 ========================== */
 let AC_ACTIVE = null;
 function closeAC(){ if(AC_ACTIVE){ AC_ACTIVE.remove(); AC_ACTIVE=null; } }
@@ -692,6 +838,7 @@ function renderTable(code){
         cell.classList.remove('red');
         cell.parentElement.querySelector('td:last-child').innerHTML = '<span class="pill ok">OK</span>';
         persistState();
+        autoSyncStore(code);
       });
     }
     cell.addEventListener('blur', ()=>{
@@ -708,6 +855,7 @@ function renderTable(code){
         else { tiendaState[code][i].a=true; cell.classList.add('red'); tdState.innerHTML='<span class="pill warn">Revisar</span>'; }
       }
       persistState();
+      autoSyncStore(code);
     });
   });
 }
@@ -728,18 +876,7 @@ function estandarizar(code){
   tiendaState[code] = rows;
   renderTable(code);
   persistState();
-}
-
-async function guardarTienda(code){
-  // Guardar en textarea y LocalStorage (como antes)
-  const out = (tiendaState[code]||[]).map(r=> `${r.e} ${r.q}`).join('\n');
-  byId('in_'+code).value = out;
-  persistState();
-  // Subir a Supabase (reemplazo total)
-  setSyncStatus('Guardando '+code.toUpperCase()+' en Supabase...');
-  const ok = await supaReplaceStore(code, tiendaState[code]||[]);
-  setSyncStatus(ok?('Guardado '+code.toUpperCase()):('Error guardando '+code.toUpperCase()), !!ok);
-  alert(`Tienda ${code.toUpperCase()} guardada y sincronizada.`);
+  autoSyncStore(code);
 }
 
 function exportarTiendaTXT(code){
@@ -849,7 +986,7 @@ function renderGlobalTable(rows, similarSet){
             tr.querySelector('td:last-child').innerHTML = '<span class="pill warn">Posible duplicado</span>';
           }else{
             tr.classList.remove('dup');
-            tr.querySelector('td:last-child').innerHTML = '<span class="pill">OK</span>';
+            tr.querySelector('td:last-child').innerHTML = '<span class="pill ok">OK</span>';
           }
         }
       }
@@ -978,7 +1115,7 @@ function exportarGlobalXLSX(){
   if(!globalRows.length){ alert('No hay datos.'); return; }
   const today = new Date().toISOString().split('T')[0];
   const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet([['Producto','Total'], ...globalRows.map(r=>[r.name,r.total])]);
+  const ws = XLSX.utils.aoa_to_sheet([["Producto","Total"], ...globalRows.map(r=>[r.name,r.total])]);
   XLSX.utils.book_append_sheet(wb, ws, 'Global');
   XLSX.writeFile(wb, `lista_global_${today}.xlsx`);
 }
@@ -1001,7 +1138,6 @@ function shareWhatsAppProv(prov){
 }
 function shareWhatsAppGlobal(){
   const today = new Date().toISOString().split('T')[0];
-  // Construimos por proveedor + sin asignar
   const allMap = {};
   const all = [].concat(tiendaState.sp||[], tiendaState.sl||[], tiendaState.st||[]);
   all.forEach(r=>{
@@ -1043,6 +1179,200 @@ function shareWhatsAppGlobal(){
 }
 
 /* ==========================
+   COMPRAS (nuevo)
+========================== */
+function renderCompras(){
+  const wrap = byId('compras_wrap');
+  if(!purchases.length){ wrap.innerHTML = '<div class="hint">Sin compras registradas.</div>'; return; }
+  let html = '<div class="scroll-x"><table><thead><tr><th>Producto</th><th>Cantidad</th><th>Proveedor</th><th></th></tr></thead><tbody>';
+  purchases.forEach((p,i)=>{
+    html += `<tr>
+      <td contenteditable="true" data-i="${i}" data-f="name" class="green">${p.name}</td>
+      <td contenteditable="true" data-i="${i}" data-f="qty" class="green">${p.qty}</td>
+      <td contenteditable="true" data-i="${i}" data-f="prov">${p.prov||''}</td>
+      <td><button class="btn muted small" onclick="delCompra(${i})">Eliminar</button></td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  wrap.innerHTML = html;
+
+  wrap.querySelectorAll('td[contenteditable]').forEach(cell=>{
+    const i = Number(cell.dataset.i);
+    const f = cell.dataset.f;
+    if(f==='name'){
+      attachAutocomplete(cell, picked=>{
+        cell.innerText = picked;
+        purchases[i].name = picked;
+        persistState();
+        supaReplaceComprasLocal();
+      });
+    }
+    cell.addEventListener('blur', ()=>{
+      const val = cell.innerText.trim();
+      if(f==='qty'){ purchases[i].qty = Number(String(val).replace(',','.'))||0; }
+      else if(f==='name'){ purchases[i].name = removeDiacriticsUpper(val); }
+      else{ purchases[i].prov = removeDiacriticsUpper(val); }
+      persistState();
+      supaReplaceComprasLocal();
+    });
+  });
+}
+function addCompraManual(){
+  const n = removeDiacriticsUpper(byId('buy_name').value||'').trim();
+  const q = Number(String(byId('buy_qty').value||'').replace(',','.'))||0;
+  const p = removeDiacriticsUpper(byId('buy_prov').value||'').trim();
+  if(!n || q<=0){ alert('Producto y cantidad requeridos.'); return; }
+  const idx = purchases.findIndex(x=> normKey(x.name)===normKey(n) && normKey(x.prov||'')===normKey(p||''));
+  if(idx>-1){ purchases[idx].qty += q; }
+  else purchases.push({name:n, qty:q, prov:p||''});
+  byId('buy_name').value=''; byId('buy_qty').value=''; byId('buy_prov').value='';
+  persistState(); renderCompras();
+  supaReplaceComprasLocal();
+}
+function delCompra(i){
+  purchases.splice(i,1);
+  persistState(); renderCompras();
+  supaReplaceComprasLocal();
+}
+function marcarCompradoDesdeGlobal(){
+  if(!globalRows.length){ alert('Primero unifica (Global).'); return; }
+  const allMap = {};
+  PROVEEDORES.forEach(p=>{
+    (orders[p]||[]).forEach(item=>{
+      const k = normKey(item.name);
+      if(!allMap[k]) allMap[k]={name:item.name, qty:0, prov:p};
+      allMap[k].qty += Number(item.qty)||0;
+      allMap[k].prov = p;
+    });
+  });
+  globalRows.forEach(r=>{
+    const k = normKey(r.name);
+    if(!allMap[k]) allMap[k]={name:r.name, qty:0, prov:''};
+    allMap[k].qty += Number(r.total)||0;
+  });
+  Object.values(allMap).forEach(x=>{
+    const idx = purchases.findIndex(y=> normKey(y.name)===normKey(x.name) && normKey(y.prov||'')===normKey(x.prov||''));
+    if(idx>-1){ purchases[idx].qty += x.qty; }
+    else purchases.push({name:x.name, qty:x.qty, prov:x.prov||''});
+  });
+  persistState(); renderCompras();
+  supaReplaceComprasLocal();
+}
+async function supaReplaceComprasLocal(){
+  setSyncStatus('Guardando compras...');
+  const ok = await supaReplaceCompras(purchases||[]);
+  setSyncStatus(ok?'Compras guardadas':'Error compras', !!ok);
+}
+
+/* ==========================
+   REPARTO (nuevo)
+========================== */
+function rebuildRepartoFromCompras(){
+  const base = purchases.map(p=>({name:p.name, qty:p.qty}));
+  reparto = {sp:[], sl:[], st:[]};
+  base.forEach(b=>{
+    reparto.sp.push({name:b.name, qty:0});
+    reparto.sl.push({name:b.name, qty:0});
+    reparto.st.push({name:b.name, qty:0});
+  });
+  persistState(); renderReparto();
+}
+function renderReparto(){
+  const cont = byId('reparto_wrap'); cont.innerHTML='';
+  ['sp','sl','st'].forEach(code=>{
+    const card = document.createElement('div');
+    card.className='card';
+    const hd = document.createElement('div');
+    hd.className='hd';
+    hd.innerHTML = `<strong>${code.toUpperCase()}</strong>
+      <div class="toolbar">
+        <span class="hint">Solo aparecen productos comprados</span>
+      </div>`;
+    const bd = document.createElement('div');
+    bd.className='bd';
+
+    const list = reparto[code]||[];
+    const purchasedSet = new Set(purchases.map(x=>normKey(x.name)));
+    const filtered = list.filter(r=> purchasedSet.has(normKey(r.name)));
+
+    if(!filtered.length){
+      bd.innerHTML = '<div class="hint">Sin líneas para repartir.</div>';
+    }else{
+      let html = '<div class="scroll-x"><table><thead><tr><th>Producto</th><th>Cantidad</th></tr></thead><tbody>';
+      filtered.forEach((it,ix)=>{
+        html += `<tr>
+          <td contenteditable="true" data-code="${code}" data-idx="${ix}" data-f="name" class="green">${it.name}</td>
+          <td contenteditable="true" data-code="${code}" data-idx="${ix}" data-f="qty" class="green">${it.qty}</td>
+        </tr>`;
+      });
+      html += '</tbody></table></div>';
+      bd.innerHTML = html;
+
+      bd.querySelectorAll('td[contenteditable]').forEach(cell=>{
+        const code2 = cell.dataset.code;
+        const idx = Number(cell.dataset.idx);
+        const f = cell.dataset.f;
+
+        if(f==='name'){
+          attachAutocomplete(cell, picked=>{
+            cell.innerText = picked;
+            reparto[code2][idx].name = picked;
+            persistState();
+          });
+        }
+        cell.addEventListener('blur', ()=>{
+          const val = cell.innerText.trim();
+          if(f==='qty'){
+            reparto[code2][idx].qty = Number(String(val).replace(',','.'))||0;
+          }else{
+            reparto[code2][idx].name = removeDiacriticsUpper(val);
+          }
+          persistState();
+          supaReplaceRepartoLocal();
+        });
+      });
+    }
+
+    card.appendChild(hd); card.appendChild(bd);
+    cont.appendChild(card);
+  });
+}
+async function supaReplaceRepartoLocal(){
+  setSyncStatus('Guardando reparto...');
+  const flat = [];
+  ['sp','sl','st'].forEach(code=>{
+    (reparto[code]||[]).forEach(r=>{
+      if((Number(r.qty)||0)>0){
+        flat.push({tienda:code, producto:r.name, cantidad:Number(r.qty)||0});
+      }
+    });
+  });
+  const ok = await supaReplaceReparto(flat);
+  setSyncStatus(ok?'Reparto guardado':'Error reparto', !!ok);
+}
+
+/* ==========================
+   Terminar Tarea (sync + limpiar)
+========================== */
+async function terminarTarea(){
+  if(!confirm('Esto sincroniza tiendas, compras y reparto y luego limpia el dispositivo. ¿Continuar?')) return;
+  setSyncStatus('Finalizando tarea...');
+  await supaReplaceStore('sp', tiendaState.sp||[]);
+  await supaReplaceStore('sl', tiendaState.sl||[]);
+  await supaReplaceStore('st', tiendaState.st||[]);
+  await supaReplaceCompras(purchases||[]);
+  const flat = [];
+  ['sp','sl','st'].forEach(code=>{
+    (reparto[code]||[]).forEach(r=>{ if((Number(r.qty)||0)>0) flat.push({tienda:code, producto:r.name, cantidad:Number(r.qty)||0}); });
+  });
+  await supaReplaceReparto(flat);
+  localStorage.clear();
+  setSyncStatus('Tarea finalizada. Datos limpiados.');
+  alert('✅ Tarea terminada. Todo sincronizado y datos locales limpiados.');
+  location.reload();
+}
+
+/* ==========================
    INIT
 ========================== */
 (async function init(){
@@ -1052,8 +1382,9 @@ function shareWhatsAppGlobal(){
   buildProvBar();
   renderProvidersPanels();
   unificarGlobal();
+  renderCompras();
+  renderReparto();
 
-  // Cargar vocab/tiendas desde Supabase al iniciar
   try{
     setSyncStatus('Cargando desde Supabase...');
     const sv = await supaFetchVocab();
@@ -1062,11 +1393,11 @@ function shareWhatsAppGlobal(){
       byId('vocabTxt').value = unique.join('\n');
       localStorage.setItem(LS.VOCAB, byId('vocabTxt').value);
     }else{
-      // Si Supabase vacío, inicializamos con OFFICIAL en local y subimos
       byId('vocabTxt').value = uniqueVocab(toLines(OFFICIAL_VOCAB_RAW)).join('\n');
       localStorage.setItem(LS.VOCAB, byId('vocabTxt').value);
       await supaReplaceVocab(toLines(byId('vocabTxt').value));
     }
+
     const st = await supaFetchTiendas();
     if(st){
       const map = { sp:[], sl:[], st:[] };
@@ -1084,6 +1415,20 @@ function shareWhatsAppGlobal(){
       unificarGlobal();
       renderProvidersPanels();
     }
+
+    const comp = await supaFetchCompras();
+    if(comp){
+      purchases = comp.map(r=>({name:removeDiacriticsUpper(r.producto), qty:Number(r.cantidad)||0, prov: r.proveedor||''}));
+      persistState(); renderCompras();
+    }
+
+    const rep = await supaFetchReparto();
+    if(rep){
+      reparto = {sp:[], sl:[], st:[]};
+      rep.forEach(r=>{ if(reparto[r.tienda]) reparto[r.tienda].push({name:removeDiacriticsUpper(r.producto), qty:Number(r.cantidad)||0}); });
+      persistState(); renderReparto();
+    }
+
     setSyncStatus('Sincronizado');
   }catch(e){
     console.warn(e);
