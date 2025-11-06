@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ARSLAN LISTAS v4.0 — KIWI MASTER EDITION (Auto‑Sync Supabase)</title>
+<title>ARSLAN LISTAS v4.0 — KIWI MASTER EDITION (Auto-Sync Supabase)</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -74,7 +73,7 @@
   <!-- VOCABULARIO -->
   <section class="card" data-tab="Vocabulario">
     <div class="hd">
-      <strong>✔️ Vocabulario estandarizado global (auto‑sync)</strong>
+      <strong>✔️ Vocabulario estandarizado global (auto-sync)</strong>
       <div class="toolbar">
         <input id="vSearch" class="btn muted" style="padding:8px 10px" placeholder="🔎 Buscar en vocabulario" />
         <button class="btn ghost" id="btnAddVocab">Añadir palabra</button>
@@ -249,7 +248,7 @@ const PROVEEDORES = ["ESMO","MONTENEGRO","JOSÉ ANTONIO","ÁNGEL VACA","JAVI","A
 const IGNORE_WORDS = ['caja','cajas','kg','kilo','kilos','uds','ud','u','unidad','unidades','manojo','manojos','saco','sacos'];
 const $ = s => document.querySelector(s);
 const byId = id => document.getElementById(id);
-const toLines = t => String(t||'').split(/[\n\r,]/).map(x=>x.trim()).filter(Boolean);
+const toLines = t => String(t||'').split(/\n|\r|,/).map(x=>x.trim()).filter(Boolean);
 function removeDiacriticsUpper(s){
   return String(s||'')
     .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
@@ -298,30 +297,234 @@ let comprados = [];             // [{name,qty,prov}]
 let ACTIVE_PROV = PROVEEDORES[0];
 
 /**********************
+ *  OFFICIAL VOCAB    *  (Fallback si Supabase está vacío)
+ **********************/
+const OFFICIAL_VOCAB = `
+GRANNY FRANCIA
+MANZANA PINK LADY
+MANDARINA COLOMBE
+KIWI ZESPRI GOLD
+PARAGUAYO 
+KIWI TOMASIN PLANCHA
+PERA RINCON DEL SOTO
+MELOCOTON PRIMERA
+AGUACATE GRANEL
+MARACUYA
+MANZANA GOLDEN 24
+PLATANO CANARIO PRIMERA
+MANDARINA HOJA
+MANZANA GOLDEN 20
+NARANJA TOMASIN
+NECTARINA
+NUECES
+SANDIA
+LIMON SEGUNDA
+MANZANA FUJI
+NARANJA MESA SONRISA
+JENGIBRE
+BATATA
+AJO PRIMERA
+CEBOLLA NORMAL
+CALABAZA GRANDE
+PATATA LAVADA
+TOMATE CHERRY RAMA
+TOMATE CHERRY PERA
+TOMATE DANIELA
+TOMATE ROSA PRIMERA
+CEBOLLINO
+TOMATE ASURCADO MARRON
+TOMATE RAMA
+PIMIENTO PADRON
+ZANAHORIA
+PEPINO
+CEBOLLETA
+PUERROS
+BROCOLI
+JUDIA VERDE
+BERENJENA
+PIMIENTO ITALIANO VERDE
+PIMIENTO ITALIANO ROJO
+CHAMPINON
+UVA ROJA
+UVA BLANCA
+ALCACHOFA
+CALABACIN
+COLIFLOR
+BATAVIA
+ICEBERG
+MANDARINA SEGUNDA
+MANZANA GOLDEN 28
+NARANJA ZUMO
+KIWI SEGUNDA
+MANZANA ROYAL GALA 24
+PLATANO CANARIO SUELTO
+CEREZA 
+FRESAS
+ARANDANOS
+ESPINACA
+PEREJIL
+CILANTRO
+ACELGAS
+PIMIENTO VERDE
+PIMIENTO ROJO
+MACHO VERDE
+MACHO MADURO
+YUCA
+AVOCADO
+CEBOLLA ROJA
+MENTA
+HABANERO
+RABANITOS
+POMELO
+PAPAYA
+REINETA 28
+NISPERO
+ALBARICOQUE
+TOMATE PERA
+TOMATE BOLA
+TOMATE PINK
+VALVENOSTA GOLDEN
+MELOCOTON ROJO
+MELON GALIA
+APIO
+NARANJA SANHUJA
+LIMON PRIMERA
+MANGO
+MELOCOTON AMARILLO
+VALVENOSTA ROJA
+PIÑA
+NARANJA HOJA
+PERA CONFERENCIA SEGUNDA
+CEBOLLA DULCE
+TOMATE ASURCADO AZUL
+ESPARRAGOS BLANCOS
+ESPARRAGOS TRIGUEROS
+REINETA PRIMERA
+AGUACATE PRIMERA
+COCO
+NECTARINA SEGUNDA
+REINETA 24
+NECTARINA CARNE BLANCA
+GUINDILLA
+REINETA VERDE
+PATATA 25KG
+PATATA 5 KG
+TOMATE RAFF
+REPOLLO
+KIWI ZESPRI
+PARAGUAYO SEGUNDA
+MELON
+REINETA 26
+TOMATE ROSA
+MANZANA CRIPS
+ALOE VERA PIEZAS
+TOMATE ENSALADA
+PATATA 10KG
+MELON BOLLO
+CIRUELA ROJA
+LIMA
+GUINEO VERDE
+SETAS
+BANANA
+BONIATO
+FRAMBUESA
+BREVAS
+PERA AGUA
+YAUTIA
+YAME
+OKRA
+MANZANA MELASSI
+CACAHUETE
+SANDIA NEGRA
+SANDIA RAYADA
+HIGOS
+KUMATO
+KIWI CHILE
+MELOCOTON AMARILLO SEGUNDA
+HIERBABUENA
+REMOLACHA
+LECHUGA ROMANA
+KAKI
+CIRUELA CLAUDIA
+PERA LIMONERA
+CIRUELA AMARILLA
+HIGOS BLANCOS
+UVA ALVILLO
+LIMON EXTRA
+PITAHAYA ROJA
+HIGO CHUMBO
+CLEMENTINA
+GRANADA
+NECTARINA PRIMERA BIS
+CHIRIMOYA
+UVA CHELVA
+PIMIENTO CALIFORNIA VERDE
+KIWI TOMASIN  
+PIMIENTO CALIFORNIA ROJO
+MANDARINA SATSUMA
+CASTAÑA
+CAKI
+MANZANA KANZI
+PERA ERCOLINA
+NABO
+UVA ALVILLO NEGRA
+CHAYOTE
+ROYAL GALA 28
+MANDARINA PRIMERA
+PIMIENTO PINTON
+MELOCOTON AMARILLO DE CALANDA
+HINOJOS
+MANDARINA DE HOJA
+UVA ROJA PRIMERA
+UVA BLANCA PRIMERA
+`;
+
+/**********************
  *  SUPABASE SYNC     *  (Auto)
  **********************/
 async function sbReady(){
-  try{ STATUS.textContent='🔄 Sincronizando…';
+  try{
+    STATUS.textContent='🔄 Sincronizando…';
     await Promise.all([loadVocabFromSB(), loadStoresFromSB(), loadAssignmentsFromSB(), loadOrdersFromSB(), loadCompradosFromSB()]);
     STATUS.textContent='✅ Conectado';
-  }catch(e){ console.warn(e); STATUS.textContent='⚠️ Offline (se guardará local y sincroniza luego)'; }
+  }catch(e){
+    console.warn(e);
+    // Si algo falla, al menos mostrar vocabulario local
+    if (!vocabList.length) {
+      vocabList = uniqueVocab(toLines(OFFICIAL_VOCAB));
+      byId('vocabTxt').value = vocabList.join('\n');
+    }
+    STATUS.textContent='⚠️ Offline (se guarda local y sincroniza luego)';
+  }
 }
 
 // Vocabulario
 async function loadVocabFromSB(){
   const { data, error } = await sb.from('vocabulario').select('term');
-  if(error){ console.warn('vocab load',error); return; }
+  if(error){
+    console.warn('vocab load',error);
+    vocabList = uniqueVocab(toLines(OFFICIAL_VOCAB));
+    byId('vocabTxt').value = vocabList.join('\n');
+    return;
+  }
   const raw = (data||[]).map(r=>removeDiacriticsUpper(r.term));
-  vocabList = uniqueVocab(raw);
-  byId('vocabTxt').value = vocabList.join('\n');
+  if (!raw.length) {
+    // TABLA VACÍA → sembrar con el oficial y dejarlo en SB
+    vocabList = uniqueVocab(toLines(OFFICIAL_VOCAB));
+    byId('vocabTxt').value = vocabList.join('\n');
+    // upsert en supabase
+    const rows = vocabList.map(t=>({term:t}));
+    await sb.from('vocabulario').upsert(rows, { onConflict:'term' });
+  } else {
+    vocabList = uniqueVocab(raw);
+    byId('vocabTxt').value = vocabList.join('\n');
+  }
 }
 const saveVocabSB = debounce(async function(){
   try{
     const rows = uniqueVocab(toLines(byId('vocabTxt').value)).map(t=>({term:t}));
     vocabList = rows.map(r=>r.term);
-    // Upsert masivo
     if(rows.length){ await sb.from('vocabulario').upsert(rows, {onConflict:'term'}); }
-    // Borrar términos no presentes
     const { data:all } = await sb.from('vocabulario').select('term');
     const toDel = (all||[]).filter(x=>!vocabList.includes(removeDiacriticsUpper(x.term)));
     if(toDel.length){ await sb.from('vocabulario').delete().in('term', toDel.map(x=>x.term)); }
@@ -402,7 +605,7 @@ function attachAutocomplete(cell, onPick){
  **********************/
 function parseLine(raw){
   if(!raw) return null;
-  let s = raw.replace(/\t/g,' ').replace(/\s{2,}/g,' ').trim(); s = s.replace(/^[\-•*]\s*/,'');
+  let s = raw.replace(/\t/g,' ').replace(/\s{2,}/g,' ').trim(); s = s.replace(/^[-•*]\s*/,'');
   let qty=null, name=s;
   // xN o *N
   const mX = s.match(/(?:x|X|\*)\s*(\d+[\.,]?\d*)\b/); if(mX){ qty=Number(mX[1].replace(',','.')); name=s.replace(mX[0],'').trim(); }
@@ -584,7 +787,7 @@ function renderCompras(){
 }
 function moverNoCompradosACompras(){ renderCompras(); alert('Pendientes listados a la izquierda. Marca ✔️ en Proveedores para mover a Comprados.'); }
 function generarReparto(){
-  // Reparto básico: muestra lo comprado por ahora (sin algoritmo de división por tienda porque no hay proporciones definidas)
+  // Reparto básico: muestra lo comprado por ahora (sin algoritmo de división por tienda)
   const map = new Map();
   comprados.forEach(x=>{ const k = normKey(x.name); if(!map.has(k)) map.set(k,{name:x.name,total:0}); map.get(k).total += Number(x.qty)||0; });
   let html = '<table><thead><tr><th>Producto</th><th>Total Comprado</th></tr></thead><tbody>';
