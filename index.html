@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ARSLAN LISTAS v4.0 — KIWI MASTER EDITION (Auto-Sync Supabase)</title>
+<title>ARSLAN LISTAS v4.1 — KIWI MASTER EDITION (Auto-Sync Supabase)</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -31,7 +31,7 @@
   .card .bd{padding:12px}
   textarea{width:100%;min-height:120px;border:1px solid var(--border);border-radius:12px;padding:10px;resize:vertical}
   table{width:100%;border-collapse:collapse}
-  th,td{border-bottom:1px solid var(--border);padding:8px;text-align:left;font-size:14px}
+  th,td{border-bottom:1px solid var(--border);padding:8px;text-align:left;font-size:14px;vertical-align:top}
   th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
   .toolbar{display:flex;gap:8px;flex-wrap:wrap}
   .btn{padding:8px 12px;border-radius:10px;border:1px solid var(--kiwi);background:linear-gradient(135deg,var(--kiwi),var(--kiwi-2));color:#fff;cursor:pointer;font-size:14px}
@@ -55,22 +55,21 @@
   .wa{display:inline-flex;align-items:center;gap:6px}
   .wa svg{width:18px;height:18px}
   .status{font-size:12px}
+  .left-btn{min-width:42px}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <div class="brand">
-      <!-- Kiwi SVG logo -->
       <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-label="Kiwi Logo" role="img"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs><circle cx="64" cy="64" r="58" fill="url(#g)" stroke="#15803d" stroke-width="4"/><circle cx="64" cy="64" r="12" fill="#111827"/><g stroke="#065f46" stroke-width="3"> <line x1="64" y1="22" x2="64" y2="40"/> <line x1="64" y1="86" x2="64" y2="106"/> <line x1="22" y1="64" x2="42" y2="64"/> <line x1="86" y1="64" x2="106" y2="64"/> <line x1="36" y1="36" x2="48" y2="48"/> <line x1="80" y1="80" x2="92" y2="92"/> <line x1="36" y1="92" x2="48" y2="80"/> <line x1="80" y1="48" x2="92" y2="36"/></g></svg>
-      <h1>ARSLAN LISTAS v4.0 — KIWI MASTER EDITION</h1>
+      <h1>ARSLAN LISTAS v4.1 — KIWI MASTER EDITION</h1>
       <span class="status" id="syncStatus">⏳ Conectando…</span>
     </div>
     <div class="tabs" id="tabs"></div>
   </div>
 </header>
 <main>
-  <!-- VOCABULARIO -->
   <section class="card" data-tab="Vocabulario">
     <div class="hd">
       <strong>✔️ Vocabulario estandarizado global (auto-sync)</strong>
@@ -86,16 +85,12 @@
     </div>
   </section>
 
-  <!-- TIENDAS -->
   <section class="grid-3" data-tab="Tiendas">
     <div class="card">
       <div class="hd"><strong>San Pablo</strong>
         <div class="toolbar">
           <button class="btn ghost" onclick="estandarizar('sp')">Estandarizar</button>
-          <a class="btn muted wa" id="wa_sp" href="#" target="_blank" rel="noopener" title="Enviar por WhatsApp"> 
-            <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.5.7 4.8 2 6.8L4 29l7.4-2c1.9 1 4.1 1.6 6.6 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm6.9 17.2c-.3.9-1.6 1.6-2.2 1.7-.6.1-1.3.1-2.1-.1-.5-.1-1.2-.4-2.1-.9-3.6-2.1-5.9-5.1-6.1-5.3-.2-.2-1.4-1.9-1.4-3.6 0-1.7.9-2.6 1.3-3 .3-.3.7-.4 1-.4h.7c.2 0 .5 0 .7.6.3.7 1 2.6 1.1 2.8.1.2.1.4 0 .6-.2.4-.3.6-.6 1-.3.3-.6.7-.9.9-.1.1-.2.2-.1.4.1.3.5 1.2 1.6 2.3 1.1 1.2 2.7 2.2 3 2.4.3.2.5.2.7.1.2-.1 1.1-.5 1.4-1 .4-.5.8-.4 1.2-.2.3.2 2.1 1 2.4 1.2.4.2.6.3.7.5.1.2.1 1 .0 1.3z" fill="#25D366"/></svg>
-            WhatsApp TXT
-          </a>
+          <button class="btn muted" onclick="waTxtStore('sp')">WhatsApp TXT</button>
         </div>
       </div>
       <div class="bd">
@@ -112,10 +107,7 @@ aguacate granel 4"></textarea>
       <div class="hd"><strong>San Lesmes</strong>
         <div class="toolbar">
           <button class="btn ghost" onclick="estandarizar('sl')">Estandarizar</button>
-          <a class="btn muted wa" id="wa_sl" href="#" target="_blank" rel="noopener" title="Enviar por WhatsApp"> 
-            <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.5.7 4.8 2 6.8L4 29l7.4-2c1.9 1 4.1 1.6 6.6 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm6.9 17.2c-.3.9-1.6 1.6-2.2 1.7-.6.1-1.3.1-2.1-.1-.5-.1-1.2-.4-2.1-.9-3.6-2.1-5.9-5.1-6.1-5.3-.2-.2-1.4-1.9-1.4-3.6 0-1.7.9-2.6 1.3-3 .3-.3.7-.4 1-.4h.7c.2 0 .5 0 .7.6.3.7 1 2.6 1.1 2.8.1.2.1.4 0 .6-.2.4-.3.6-.6 1-.3.3-.6.7-.9.9-.1.1-.2.2-.1.4.1.3.5 1.2 1.6 2.3 1.1 1.2 2.7 2.2 3 2.4.3.2.5.2.7.1.2-.1 1.1-.5 1.4-1 .4-.5.8-.4 1.2-.2.3.2 2.1 1 2.4 1.2.4.2.6.3.7.5.1.2.1 1 .0 1.3z" fill="#25D366"/></svg>
-            WhatsApp TXT
-          </a>
+          <button class="btn muted" onclick="waTxtStore('sl')">WhatsApp TXT</button>
         </div>
       </div>
       <div class="bd">
@@ -129,10 +121,7 @@ aguacate granel 4"></textarea>
       <div class="hd"><strong>Santiago</strong>
         <div class="toolbar">
           <button class="btn ghost" onclick="estandarizar('st')">Estandarizar</button>
-          <a class="btn muted wa" id="wa_st" href="#" target="_blank" rel="noopener" title="Enviar por WhatsApp"> 
-            <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.5.7 4.8 2 6.8L4 29l7.4-2c1.9 1 4.1 1.6 6.6 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm6.9 17.2c-.3.9-1.6 1.6-2.2 1.7-.6.1-1.3.1-2.1-.1-.5-.1-1.2-.4-2.1-.9-3.6-2.1-5.9-5.1-6.1-5.3-.2-.2-1.4-1.9-1.4-3.6 0-1.7.9-2.6 1.3-3 .3-.3.7-.4 1-.4h.7c.2 0 .5 0 .7.6.3.7 1 2.6 1.1 2.8.1.2.1.4 0 .6-.2.4-.3.6-.6 1-.3.3-.6.7-.9.9-.1.1-.2.2-.1.4.1.3.5 1.2 1.6 2.3 1.1 1.2 2.7 2.2 3 2.4.3.2.5.2.7.1.2-.1 1.1-.5 1.4-1 .4-.5.8-.4 1.2-.2.3.2 2.1 1 2.4 1.2.4.2.6.3.7.5.1.2.1 1 .0 1.3z" fill="#25D366"/></svg>
-            WhatsApp TXT
-          </a>
+          <button class="btn muted" onclick="waTxtStore('st')">WhatsApp TXT</button>
         </div>
       </div>
       <div class="bd">
@@ -143,7 +132,6 @@ aguacate granel 4"></textarea>
     </div>
   </section>
 
-  <!-- GLOBAL -->
   <section class="card" data-tab="Global">
     <div class="hd">
       <strong>🧮 Unificación global</strong>
@@ -152,7 +140,7 @@ aguacate granel 4"></textarea>
         <button class="btn muted" onclick="exportarGlobalTXT()">Exportar TXT</button>
         <button class="btn muted" onclick="exportarGlobalXLSX()">Exportar Excel</button>
         <button class="btn muted" onclick="copiarGlobal()">Copiar</button>
-        <button class="btn" onclick="generarResumenTXT()">Generar Resumen TXT</button>
+        <button class="btn" onclick="generarResumenTXT()">Resumen TXT (WA)</button>
       </div>
     </div>
     <div class="bd">
@@ -161,7 +149,6 @@ aguacate granel 4"></textarea>
     </div>
   </section>
 
-  <!-- PROVEEDORES -->
   <section class="card" data-tab="Proveedores" style="margin-top:14px">
     <div class="hd">
       <strong>📦 Distribución por proveedor</strong>
@@ -172,11 +159,10 @@ aguacate granel 4"></textarea>
     </div>
   </section>
 
-  <!-- COMPRAS / REPARTO -->
   <section class="card" data-tab="Compras & Reparto" style="margin-top:14px">
     <div class="hd"><strong>🧾 Compras y Reparto a tiendas</strong>
       <div class="toolbar">
-        <button class="btn ghost" onclick="moverNoCompradosACompras()">Pendientes → Compras</button>
+        <button class="btn ghost" onclick="moverNoCompradosACompras()">Refrescar pendientes</button>
         <button class="btn muted" onclick="generarReparto()">Generar reparto por tienda</button>
       </div>
     </div>
@@ -198,7 +184,6 @@ aguacate granel 4"></textarea>
     </div>
   </section>
 
-  <!-- TERMINAR -->
   <section class="card" data-tab="Terminar">
     <div class="hd"><strong>✅ Terminar tarea</strong></div>
     <div class="bd">
@@ -209,96 +194,50 @@ aguacate granel 4"></textarea>
 </main>
 
 <script>
-/**********************
- *  CONFIG SUPABASE   *
- **********************/
 const SUPABASE_URL = 'https://esvfgvfqttvjcrsnxufq.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzdmZndmZxdHR2amNyc254dWZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNTIwNjIsImV4cCI6MjA3NzgyODA2Mn0.SdtgaK6c7gJAxA8jH77w0K3ctMlvGx6g4YLYrI0PKuw';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const STATUS = document.getElementById('syncStatus');
 
-/**********************
- *  UI TABS           *
- **********************/
 const TABS = ['Vocabulario','Tiendas','Global','Proveedores','Compras & Reparto','Terminar'];
 const tabsEl = document.getElementById('tabs');
 function buildTabs(){
   tabsEl.innerHTML='';
   TABS.forEach((t,i)=>{
     const b=document.createElement('button');
-    b.className='tab-btn'+(i===1?' active':'');
-    b.textContent=t; b.onclick=()=>activateTab(t);
+    b.className='tab-btn'+(i===1?' active':''); b.textContent=t; b.onclick=()=>activateTab(t);
     tabsEl.appendChild(b);
   });
   activateTab('Tiendas');
 }
 function activateTab(name){
-  document.querySelectorAll('.tab-btn').forEach(btn=>{
-    btn.classList.toggle('active', btn.textContent===name);
-  });
-  document.querySelectorAll('main > section').forEach(sec=>{
-    sec.style.display = (sec.dataset.tab===name || (!sec.dataset.tab && name==='Tiendas')) ? '' : 'none';
-  });
+  document.querySelectorAll('.tab-btn').forEach(btn=> btn.classList.toggle('active', btn.textContent===name));
+  document.querySelectorAll('main > section').forEach(sec=> sec.style.display = (sec.dataset.tab===name || (!sec.dataset.tab && name==='Tiendas')) ? '' : 'none');
 }
 
-/**********************
- *  HELPERS           *
- **********************/
 const PROVEEDORES = ["ESMO","MONTENEGRO","JOSÉ ANTONIO","ÁNGEL VACA","JAVI","ANGELO"];
 const IGNORE_WORDS = ['caja','cajas','kg','kilo','kilos','uds','ud','u','unidad','unidades','manojo','manojos','saco','sacos'];
 const $ = s => document.querySelector(s);
 const byId = id => document.getElementById(id);
-const toLines = t => String(t||'').split(/\n|\r|,/).map(x=>x.trim()).filter(Boolean);
-function removeDiacriticsUpper(s){
-  return String(s||'')
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .replace(/ñ/g,'N').replace(/Ñ/g,'N')
-    .toUpperCase();
-}
-function normKey(s){
-  return removeDiacriticsUpper(s)
-    .replace(/[^A-Z0-9\s]/g,' ')
-    .replace(/\s+/g,' ')
-    .trim();
-}
-function stripGenericWords(s){
-  const tokens = normKey(s).split(' ').filter(t=>!IGNORE_WORDS.includes(t.toLowerCase()));
-  return tokens.join(' ').trim();
-}
-function bigrams(str){
-  const s = stripGenericWords(str);
-  const arr=[]; for(let i=0;i<s.length-1;i++){ if(s[i]!==' '&&s[i+1]!==' ') arr.push(s.slice(i,i+2)); }
-  return arr;
-}
-function diceSim(a,b){
-  const A=bigrams(a), B=bigrams(b);
-  if(!A.length||!B.length) return 0;
-  let hits=0; const pool=B.slice();
-  A.forEach(bg=>{const idx=pool.indexOf(bg); if(idx>-1){hits++; pool.splice(idx,1);} });
-  return (2*hits)/(A.length+B.length);
-}
-function bestMatch(query, vocabArr){
-  const q = stripGenericWords(query);
-  let best = {name:null, score:0};
-  vocabArr.forEach(v=>{ const sc = diceSim(q, v); if(sc>best.score) best={name:v,score:sc}; });
-  return best;
-}
+const toLines = t => String(t||'').split(/[
+
+,]/).map(x=>x.trim()).filter(Boolean);
+function removeDiacriticsUpper(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ñ/g,'N').replace(/Ñ/g,'N').toUpperCase(); }
+function normKey(s){ return removeDiacriticsUpper(s).replace(/[^A-Z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); }
+function stripGenericWords(s){ const tokens = normKey(s).split(' ').filter(t=>!IGNORE_WORDS.includes(t.toLowerCase())); return tokens.join(' ').trim(); }
+function bigrams(str){ const s = stripGenericWords(str); const arr=[]; for(let i=0;i<s.length-1;i++){ if(s[i]!==' '&&s[i+1]!==' ') arr.push(s.slice(i,i+2)); } return arr; }
+function diceSim(a,b){ const A=bigrams(a), B=bigrams(b); if(!A.length||!B.length) return 0; let hits=0; const pool=B.slice(); A.forEach(bg=>{const idx=pool.indexOf(bg); if(idx>-1){hits++; pool.splice(idx,1);} }); return (2*hits)/(A.length+B.length); }
+function bestMatch(query, vocabArr){ const q=stripGenericWords(query); let best={name:null,score:0}; vocabArr.forEach(v=>{ const sc=diceSim(q,v); if(sc>best.score) best={name:v,score:sc}; }); return best; }
 function debounce(fn,ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args),ms); }; }
 
-/**********************
- *  STATE             *
- **********************/
-const tiendaState = { sp:[], sl:[], st:[] }; // [{o,e,q,a}]
+const tiendaState = { sp:[], sl:[], st:[] };
 let vocabList = [];
-let globalRows = [];            // [{name,total}]
-let assignments = {};           // { key : proveedor }
-let orders = {};                // { proveedor : [{name,qty, comprado:false}] }
-let comprados = [];             // [{name,qty,prov}]
+let globalRows = [];
+let assignments = {};
+let orders = {};
+let comprados = [];
 let ACTIVE_PROV = PROVEEDORES[0];
 
-/**********************
- *  OFFICIAL VOCAB    *  (Fallback si Supabase está vacío)
- **********************/
 const OFFICIAL_VOCAB = `
 GRANNY FRANCIA
 MANZANA PINK LADY
@@ -479,9 +418,6 @@ UVA ROJA PRIMERA
 UVA BLANCA PRIMERA
 `;
 
-/**********************
- *  SUPABASE SYNC     *  (Auto)
- **********************/
 async function sbReady(){
   try{
     STATUS.textContent='🔄 Sincronizando…';
@@ -489,16 +425,10 @@ async function sbReady(){
     STATUS.textContent='✅ Conectado';
   }catch(e){
     console.warn(e);
-    // Si algo falla, al menos mostrar vocabulario local
-    if (!vocabList.length) {
-      vocabList = uniqueVocab(toLines(OFFICIAL_VOCAB));
-      byId('vocabTxt').value = vocabList.join('\n');
-    }
+    if (!vocabList.length) { vocabList = uniqueVocab(toLines(OFFICIAL_VOCAB)); byId('vocabTxt').value = vocabList.join('\n'); }
     STATUS.textContent='⚠️ Offline (se guarda local y sincroniza luego)';
   }
 }
-
-// Vocabulario
 async function loadVocabFromSB(){
   const { data, error } = await sb.from('vocabulario').select('term');
   if(error){
@@ -509,10 +439,8 @@ async function loadVocabFromSB(){
   }
   const raw = (data||[]).map(r=>removeDiacriticsUpper(r.term));
   if (!raw.length) {
-    // TABLA VACÍA → sembrar con el oficial y dejarlo en SB
     vocabList = uniqueVocab(toLines(OFFICIAL_VOCAB));
     byId('vocabTxt').value = vocabList.join('\n');
-    // upsert en supabase
     const rows = vocabList.map(t=>({term:t}));
     await sb.from('vocabulario').upsert(rows, { onConflict:'term' });
   } else {
@@ -530,60 +458,19 @@ const saveVocabSB = debounce(async function(){
     if(toDel.length){ await sb.from('vocabulario').delete().in('term', toDel.map(x=>x.term)); }
   }catch(e){ console.warn('vocab save',e); }
 }, 600);
+function uniqueVocab(lines){ const seen=new Set(); const out=[]; for(const l of lines){ const t=removeDiacriticsUpper(l).trim(); if(!t) continue; const k=normKey(t); if(!seen.has(k)){ seen.add(k); out.push(t); } } return out; }
 
-function uniqueVocab(lines){
-  const seen = new Set(); const out=[];
-  for(const l of lines){ const t = removeDiacriticsUpper(l).trim(); if(!t) continue; const k = normKey(t); if(!seen.has(k)){ seen.add(k); out.push(t); } }
-  return out;
-}
+async function loadStoresFromSB(){ const { data, error } = await sb.from('tiendas').select('tienda, rows'); if(error){ console.warn('stores load',error); return; } (data||[]).forEach(r=>{ if(['sp','sl','st'].includes(r.tienda) && Array.isArray(r.rows)) tiendaState[r.tienda]=r.rows; }); ['sp','sl','st'].forEach(renderTable); }
+const saveStoreSB = debounce(async function(code){ try{ const rows=tiendaState[code]||[]; await sb.from('tiendas').upsert({tienda:code, rows},{onConflict:'tienda'}); }catch(e){ console.warn('store save',code,e); } }, 500);
 
-// Tiendas
-async function loadStoresFromSB(){
-  const { data, error } = await sb.from('tiendas').select('tienda, rows');
-  if(error){ console.warn('stores load',error); return; }
-  (data||[]).forEach(r=>{ if(['sp','sl','st'].includes(r.tienda) && Array.isArray(r.rows)) tiendaState[r.tienda]=r.rows; });
-  ['sp','sl','st'].forEach(renderTable);
-}
-const saveStoreSB = debounce(async function(code){
-  try{ const rows = tiendaState[code]||[];
-    await sb.from('tiendas').upsert({tienda:code, rows},{onConflict:'tienda'});
-  }catch(e){ console.warn('store save',code,e); }
-}, 500);
+async function loadAssignmentsFromSB(){ const { data, error } = await sb.from('asignados').select('key, proveedor'); if(error){ console.warn('assign load',error); return; } assignments={}; (data||[]).forEach(r=> assignments[r.key]=r.proveedor); }
+async function saveAssignmentSB(key, prov){ try{ await sb.from('asignados').upsert({key,proveedor:prov},{onConflict:'key'}); }catch(e){ console.warn('assign save',e); } }
+async function loadOrdersFromSB(){ const { data, error } = await sb.from('pedidos').select('proveedor, items'); if(error){ console.warn('orders load',error); return; } orders={}; PROVEEDORES.forEach(p=>orders[p]=[]); (data||[]).forEach(r=>{ orders[r.proveedor]=Array.isArray(r.items)?r.items:[]; }); renderProvidersPanels(); }
+const saveOrdersSB = debounce(async function(prov){ try{ await sb.from('pedidos').upsert({proveedor:prov, items:orders[prov]||[]},{onConflict:'proveedor'}); } catch(e){ console.warn('orders save',prov,e); } }, 500);
 
-// Assignments / Orders / Comprados
-async function loadAssignmentsFromSB(){
-  const { data, error } = await sb.from('asignados').select('key, proveedor');
-  if(error){ console.warn('assign load',error); return; }
-  assignments={}; (data||[]).forEach(r=> assignments[r.key]=r.proveedor);
-}
-async function saveAssignmentSB(key, prov){
-  try{ await sb.from('asignados').upsert({key,proveedor:prov},{onConflict:'key'}); }catch(e){ console.warn('assign save',e); }
-}
-async function loadOrdersFromSB(){
-  const { data, error } = await sb.from('pedidos').select('proveedor, items');
-  if(error){ console.warn('orders load',error); return; }
-  orders={}; PROVEEDORES.forEach(p=>orders[p]=[]);
-  (data||[]).forEach(r=>{ orders[r.proveedor]=Array.isArray(r.items)?r.items:[]; });
-}
-const saveOrdersSB = debounce(async function(prov){
-  try{ await sb.from('pedidos').upsert({proveedor:prov, items:orders[prov]||[]},{onConflict:'proveedor'}); }
-  catch(e){ console.warn('orders save',prov,e); }
-}, 500);
+async function loadCompradosFromSB(){ const { data, error } = await sb.from('comprados').select('items'); if(error){ console.warn('comprados load',error); return; } comprados = (data && data[0] && Array.isArray(data[0].items)) ? data[0].items : []; renderCompras(); }
+const saveCompradosSB = debounce(async function(){ try{ await sb.from('comprados').upsert({id:1, items:comprados},{onConflict:'id'}); } catch(e){ console.warn('comprados save',e); } }, 600);
 
-async function loadCompradosFromSB(){
-  const { data, error } = await sb.from('comprados').select('items');
-  if(error){ console.warn('comprados load',error); return; }
-  comprados = (data && data[0] && Array.isArray(data[0].items)) ? data[0].items : [];
-  renderCompras();
-}
-const saveCompradosSB = debounce(async function(){
-  try{ await sb.from('comprados').upsert({id:1, items:comprados},{onConflict:'id'}); }
-  catch(e){ console.warn('comprados save',e); }
-}, 600);
-
-/**********************
- *  AUTOCOMPLETE      *
- **********************/
 let AC_ACTIVE = null;
 function closeAC(){ if(AC_ACTIVE){ AC_ACTIVE.remove(); AC_ACTIVE=null; } }
 function attachAutocomplete(cell, onPick){
@@ -600,30 +487,21 @@ function attachAutocomplete(cell, onPick){
   document.addEventListener('click', (e)=>{ if(AC_ACTIVE && !AC_ACTIVE.contains(e.target) && e.target!==cell){ closeAC(); } }, {capture:true});
 }
 
-/**********************
- *  PARSER LÍNEAS     *
- **********************/
 function parseLine(raw){
   if(!raw) return null;
-  let s = raw.replace(/\t/g,' ').replace(/\s{2,}/g,' ').trim(); s = s.replace(/^[-•*]\s*/,'');
+  let s = raw.replace(/\t/g,' ').replace(/\s{2,}/g,' ').trim(); s = s.replace(/^[\-•*]\s*/,'');
   let qty=null, name=s;
-  // xN o *N
   const mX = s.match(/(?:x|X|\*)\s*(\d+[\.,]?\d*)\b/); if(mX){ qty=Number(mX[1].replace(',','.')); name=s.replace(mX[0],'').trim(); }
-  // número al final con unidad
-  if(qty===null){ const mEnd = s.match(/(\d+[\.,]?\d*)\s*(?:kg|kgs|kilo|kilos|uds|ud|u|unidad|unidades|caja|cajas)?\s*$/i); if(mEnd){ qty=Number(mEnd[1].replace(',','.')); name=s.slice(0,mEnd.index).trim(); } }
-  // número al inicio
-  if(qty===null){ const mStart = s.match(/^\s*(\d+[\.,]?\d*)\s+(.*)$/); if(mStart){ qty=Number(mStart[1].replace(',','.')); name=mStart[2].trim(); } }
+  if(qty===null){ const mEnd=s.match(/(\d+[\.,]?\d*)\s*(?:kg|kgs|kilo|kilos|uds|ud|u|unidad|unidades|caja|cajas)?\s*$/i); if(mEnd){ qty=Number(mEnd[1].replace(',','.')); name=s.slice(0,mEnd.index).trim(); } }
+  if(qty===null){ const mStart=s.match(/^\s*(\d+[\.,]?\d*)\s+(.*)$/); if(mStart){ qty=Number(mStart[1].replace(',','.')); name=mStart[2].trim(); } }
   if(qty===null){ qty=1; }
   name = stripGenericWords(name);
   return { original: removeDiacriticsUpper(s), name, qty };
 }
 
-/**********************
- *  RENDER TIENDAS    *
- **********************/
 function renderTable(code){
   const wrap = byId('tbl_'+code+'_wrap'); const rows = tiendaState[code]||[]; if(!rows.length){ wrap.innerHTML=''; return; }
-  let html = '<table><thead><tr><th></th><th>Original</th><th>Estandarizado</th><th>Cantidad</th><th>Estado</th></tr></thead><tbody>';
+  let html = '<table><thead><tr><th class="left-btn">OK</th><th>Original</th><th>Estandarizado</th><th>Cantidad</th><th>Estado</th></tr></thead><tbody>';
   rows.forEach((r,i)=>{
     html += `<tr>
       <td><button class="btn small ghost row-ok-btn" onclick="filaOk('${code}',${i})">OK</button></td>
@@ -634,101 +512,80 @@ function renderTable(code){
     </tr>`;
   });
   html += '</tbody></table>'; wrap.innerHTML = html;
-  // editable + AC + autosave
   wrap.querySelectorAll('td[contenteditable]').forEach(cell=>{
-    const i = Number(cell.dataset.i); const f = cell.dataset.f;
-    if(f==='e'){
-      attachAutocomplete(cell, picked=>{
-        cell.innerText=picked; tiendaState[code][i].e=picked; tiendaState[code][i].a=false; cell.classList.remove('red'); cell.parentElement.querySelector('td:last-child').innerHTML='<span class="pill ok">OK</span>'; saveStoreSB(code);
-      });
-    }
+    const i=Number(cell.dataset.i); const f=cell.dataset.f;
+    if(f==='e'){ attachAutocomplete(cell, picked=>{ cell.innerText=picked; tiendaState[code][i].e=picked; tiendaState[code][i].a=false; cell.classList.remove('red'); cell.parentElement.querySelector('td:last-child').innerHTML='<span class="pill ok">OK</span>'; saveStoreSB(code); }); }
     cell.addEventListener('blur', ()=>{
-      const val = cell.innerText.trim();
+      const val=cell.innerText.trim();
       if(f==='q'){ tiendaState[code][i].q = Number(String(val).replace(',','.'))||0; }
-      else { const cleaned = removeDiacriticsUpper(val); tiendaState[code][i].e = cleaned; const exact = vocabList.find(v=> normKey(v)===normKey(cleaned)); const tdState = cell.parentElement.querySelector('td:last-child'); if(exact){ tiendaState[code][i].a=false; cell.classList.remove('red'); tdState.innerHTML='<span class="pill ok">OK</span>'; } else { tiendaState[code][i].a=true; cell.classList.add('red'); tdState.innerHTML='<span class="pill warn">Revisar</span>'; } }
+      else{ const cleaned=removeDiacriticsUpper(val); tiendaState[code][i].e=cleaned; const exact=vocabList.find(v=> normKey(v)===normKey(cleaned)); const tdState=cell.parentElement.querySelector('td:last-child'); if(exact){ tiendaState[code][i].a=false; cell.classList.remove('red'); tdState.innerHTML='<span class="pill ok">OK</span>'; } else { tiendaState[code][i].a=true; cell.classList.add('red'); tdState.innerHTML='<span class="pill warn">Revisar</span>'; } }
       saveStoreSB(code);
     });
   });
 }
 function filaOk(code,i){ tiendaState[code][i].a=false; renderTable(code); saveStoreSB(code); }
-
 function estandarizar(code){
-  const txt = byId('in_'+code).value; const rows=[]; toLines(txt).forEach(line=>{ const p=parseLine(line); if(!p) return; const exact = vocabList.find(v=> normKey(v)===normKey(p.name)); if(exact){ rows.push({o:p.original, e:exact, q:p.qty, a:false}); } else { const m=bestMatch(p.name, vocabList); const chosen=m.name||p.name; rows.push({o:p.original, e:chosen, q:p.qty, a:true}); } });
-  tiendaState[code]=rows; renderTable(code); saveStoreSB(code); updateWAButton(code);
+  const txt = byId('in_'+code).value; const rows=[];
+  toLines(txt).forEach(line=>{
+    const p=parseLine(line); if(!p) return;
+    const exact = vocabList.find(v=> normKey(v)===normKey(p.name));
+    if(exact){ rows.push({o:p.original, e:exact, q:p.qty, a:false}); }
+    else { const m=bestMatch(p.name, vocabList); const chosen=m.name||p.name; rows.push({o:p.original, e:chosen, q:p.qty, a:true}); }
+  });
+  tiendaState[code]=rows; renderTable(code); saveStoreSB(code);
 }
+function waTxtStore(code){ const rows=tiendaState[code]||[]; if(!rows.length){ alert('No hay filas estandarizadas.'); return; } const txt = rows.map(r=>`${r.q}\t${r.e}${r.a?'  *REVISAR*':''}`).join('\n'); const url='https://wa.me/?text='+encodeURIComponent(txt); window.open(url,'_blank'); }
 
-/**********************
- *  WHATSAPP TXT (tienda)
- **********************/
-function updateWAButton(code){
-  const rows = tiendaState[code]||[]; const txt = rows.map(r=>`${r.q}\t${r.e}${r.a?'  *REVISAR*':''}`).join('\n');
-  const url = 'https://wa.me/?text='+encodeURIComponent(txt); byId('wa_'+code).href=url;
-}
-
-/**********************
- *  UNIFICAR GLOBAL   *
- **********************/
 function unificarGlobal(){
   const all = [].concat(tiendaState.sp||[], tiendaState.sl||[], tiendaState.st||[]);
-  const map = new Map(); all.forEach(r=>{ const key = normKey(r.e); if(!map.has(key)) map.set(key,{name:r.e,total:0}); map.get(key).total += (Number(r.q)||0); });
+  const map = new Map();
+  all.forEach(r=>{ const key=normKey(r.e); if(!map.has(key)) map.set(key,{name:r.e,total:0}); map.get(key).total += (Number(r.q)||0); });
   const arr = Array.from(map.values()).sort((a,b)=>a.name.localeCompare(b.name,'es'));
-  // Similares
   const names = arr.map(x=>x.name); const similarSet = new Set();
-  for(let i=0;i<names.length;i++){
-    for(let j=i+1;j<names.length;j++){
-      const s1=names[i], s2=names[j]; const sim=diceSim(s1,s2);
-      if(sim>=0.9 && normKey(s1)!==normKey(s2)){ similarSet.add(s1); similarSet.add(s2); }
-    }
-  }
+  for(let i=0;i<names.length;i++){ for(let j=i+1;j<names.length;j++){ const s1=names[i], s2=names[j]; const sim=diceSim(s1,s2); if(sim>=0.9 && normKey(s1)!==normKey(s2)){ similarSet.add(s1); similarSet.add(s2); } } }
   renderGlobalTable(arr, similarSet);
 }
-
 function renderGlobalTable(rows, similarSet){
   const visible = rows.filter(r => !assignments[normKey(r.name)]);
   globalRows = visible;
   const wrap = byId('global_wrap'); if(!visible.length){ wrap.innerHTML='<div class="hint">Sin productos (todo asignado o no unificado).</div>'; return; }
-  let html = `<div class="hint" style="margin-bottom:6px">Proveedor activo: <b>${ACTIVE_PROV}</b>. Haz clic en una fila para asignarla.</div>
-    <table><thead><tr><th>Producto (click = asignar a ${ACTIVE_PROV})</th><th>Total</th><th>Estado</th></tr></thead><tbody>`;
+  let html = `<div class="hint" style="margin-bottom:6px">Proveedor activo: <b>${ACTIVE_PROV}</b>.</div>
+    <table><thead><tr><th class="left-btn">➡️</th><th>Producto</th><th>Total</th><th>Estado</th></tr></thead><tbody>`;
   visible.forEach((r,i)=>{
     const isSimilar = similarSet.has(r.name);
-    html += `<tr data-i="${i}" class="${assignments[normKey(r.name)]?'assigned':''}">
+    html += `<tr data-i="${i}">
+      <td><button class="btn small ghost" onclick="assignRow(${i})">➡️</button></td>
       <td contenteditable="true" data-f="name" ${isSimilar? 'class="red"':''}>${r.name}</td>
       <td contenteditable="true" data-f="total">${r.total}</td>
       <td>${isSimilar? '<span class="pill warn">Posible duplicado</span>':'<span class="pill">OK</span>'}</td>
     </tr>`;
   }); html += '</tbody></table>'; wrap.innerHTML = html;
-
-  // Edición + AC
   wrap.querySelectorAll('td[contenteditable]').forEach(cell=>{
-    const tr = cell.parentElement; const idx = Number(tr.dataset.i); const f = cell.dataset.f;
+    const tr=cell.parentElement; const idx=Number(tr.dataset.i); const f=cell.dataset.f;
     if(f==='name') attachAutocomplete(cell, picked=>{ cell.innerText=picked; globalRows[idx].name=picked; cell.classList.remove('red'); tr.querySelector('td:last-child').innerHTML='<span class="pill">OK</span>'; });
     cell.addEventListener('blur', ()=>{
-      const val = cell.innerText.trim(); if(f==='total'){ globalRows[idx].total = Number(String(val).replace(',','.'))||0; }
+      const val=cell.innerText.trim(); if(f==='total'){ globalRows[idx].total = Number(String(val).replace(',','.'))||0; }
       else{ const cleaned=removeDiacriticsUpper(val); globalRows[idx].name=cleaned; const exact=vocabList.find(v=> normKey(v)===normKey(cleaned)); if(exact){ cell.classList.remove('red'); tr.querySelector('td:last-child').innerHTML='<span class="pill">OK</span>'; } else { cell.classList.add('red'); tr.querySelector('td:last-child').innerHTML='<span class="pill warn">Revisar</span>'; } }
     });
   });
-
-  // Asignación clic fila
-  wrap.querySelectorAll('tbody tr').forEach(tr=>{
-    tr.addEventListener('click', async (ev)=>{
-      if(ev.target && ev.target.getAttribute('contenteditable')==='true') return;
-      const idx = Number(tr.dataset.i); const item = globalRows[idx]; if(!item) return;
-      const k = normKey(item.name); assignments[k]=ACTIVE_PROV; await saveAssignmentSB(k, ACTIVE_PROV);
-      const list = orders[ACTIVE_PROV]||[]; const exIdx=list.findIndex(x=> normKey(x.name)===k);
-      if(exIdx>-1){ list[exIdx].qty += Number(item.total)||0; }
-      else { list.push({name:item.name, qty:Number(item.total)||0, comprado:false}); }
-      orders[ACTIVE_PROV]=list; saveOrdersSB(ACTIVE_PROV);
-      unificarGlobal(); renderProvidersPanels(); renderCompras();
-    });
-  });
+}
+async function assignRow(idx){
+  const item=globalRows[idx]; if(!item) return;
+  const k=normKey(item.name);
+  assignments[k]=ACTIVE_PROV; await saveAssignmentSB(k, ACTIVE_PROV);
+  const list=orders[ACTIVE_PROV]||[]; const exIdx=list.findIndex(x=> normKey(x.name)===k);
+  if(exIdx>-1){ list[exIdx].qty += Number(item.total)||0; } else { list.push({name:item.name, qty:Number(item.total)||0, comprado:false}); }
+  orders[ACTIVE_PROV]=list; saveOrdersSB(ACTIVE_PROV);
+  unificarGlobal(); renderProvidersPanels(); renderCompras();
 }
 
-/**********************
- *  PROVEEDORES       *
- **********************/
 function buildProvBar(){
   const bar = byId('provBar'); bar.innerHTML='';
-  PROVEEDORES.forEach(p=>{ const b=document.createElement('button'); b.className='prov-btn'+(p===ACTIVE_PROV?' active':''); b.textContent=p; b.onclick=()=>{ ACTIVE_PROV=p; buildProvBar(); unificarGlobal(); }; bar.appendChild(b); });
+  PROVEEDORES.forEach(p=>{
+    const b=document.createElement('button'); b.className='prov-btn'+(p===ACTIVE_PROV?' active':''); b.textContent=p;
+    b.onclick=()=>{ ACTIVE_PROV=p; buildProvBar(); unificarGlobal(); };
+    bar.appendChild(b);
+  });
 }
 function renderProvidersPanels(){
   const cont = byId('provPanels'); cont.innerHTML='';
@@ -738,11 +595,12 @@ function renderProvidersPanels(){
     hd.innerHTML = `<strong>${p}</strong>
       <div class="toolbar">
         <button class="btn small" onclick="exportProvTXT('${p}')">📄 TXT</button>
-        <a class="btn small muted wa" href="#" onclick="waProv('${p}')">WhatsApp</a>
+        <button class="btn small muted" onclick="waProv('${p}')">WhatsApp</button>
       </div>`;
     const bd=document.createElement('div'); bd.className='bd';
     if(!list.length){ bd.innerHTML='<div class="hint">Sin productos asignados.</div>'; }
-    else{ let html='<table><thead><tr><th></th><th>Producto</th><th>Cantidad</th><th>Estado</th></tr></thead><tbody>';
+    else{
+      let html='<table><thead><tr><th></th><th>Producto</th><th>Cantidad</th><th>Estado</th></tr></thead><tbody>';
       list.forEach((it,ix)=>{
         html += `<tr>
           <td><button class="btn small ghost" onclick="toggleComprado('${p}',${ix})">${it.comprado?'✔️':'○'}</button></td>
@@ -750,57 +608,53 @@ function renderProvidersPanels(){
           <td contenteditable="true" data-prov="${p}" data-idx="${ix}" data-f="qty" class="green">${it.qty}</td>
           <td>${it.comprado?'<span class="pill ok">Comprado</span>':'<span class="pill">Pendiente</span>'}</td>
         </tr>`;
-      }); html+='</tbody></table>'; bd.innerHTML=html;
+      });
+      html+='</tbody></table>'; bd.innerHTML=html;
       bd.querySelectorAll('td[contenteditable]').forEach(cell=>{
         const prov=cell.dataset.prov; const idx=Number(cell.dataset.idx); const f=cell.dataset.f;
         if(f==='name') attachAutocomplete(cell, picked=>{ cell.innerText=picked; orders[prov][idx].name=picked; saveOrdersSB(prov); });
-        cell.addEventListener('blur', ()=>{ const val=cell.innerText.trim(); if(f==='qty'){ orders[prov][idx].qty = Number(String(val).replace(',','.'))||0; } else { orders[prov][idx].name = removeDiacriticsUpper(val); } saveOrdersSB(prov); });
+        cell.addEventListener('blur', ()=>{
+          const val=cell.innerText.trim();
+          if(f==='qty'){ orders[prov][idx].qty = Number(String(val).replace(',','.'))||0; }
+          else { orders[prov][idx].name = removeDiacriticsUpper(val); }
+          saveOrdersSB(prov);
+        });
       });
     }
     card.appendChild(hd); card.appendChild(bd); cont.appendChild(card);
   });
 }
 function toggleComprado(prov, idx){
-  const it = orders[prov][idx]; it.comprado = !it.comprado; saveOrdersSB(prov);
-  if(it.comprado){ comprados.push({name:it.name, qty:it.qty, prov}); saveCompradosSB(); }
-  renderProvidersPanels(); renderCompras();
+  const it = orders[prov][idx]; it.comprado = !it.comprado;
+  if(it.comprado){
+    comprados.push({name:it.name, qty:it.qty, prov}); saveCompradosSB();
+  }else{
+    const k=normKey(it.name);
+    const pos=comprados.findIndex(x=> normKey(x.name)===k && x.prov===prov && Number(x.qty)===Number(it.qty));
+    if(pos>-1){ comprados.splice(pos,1); saveCompradosSB(); }
+  }
+  saveOrdersSB(prov); renderProvidersPanels(); renderCompras();
 }
-function waProv(prov){
-  const list = (orders[prov]||[]).map(x=>`${x.qty}\t${x.name}${x.comprado?'  ✔️':''}`).join('\n');
-  const url = 'https://wa.me/?text='+encodeURIComponent(list); window.open(url,'_blank');
-}
-function exportProvTXT(prov){
-  const list = orders[prov]||[]; if(!list.length){ alert('No hay líneas para '+prov); return; }
-  const today = new Date().toISOString().split('T')[0];
-  const txt = list.map(x=> `${x.qty}\t${x.name}${x.comprado?'\tCOMPRADO':''}`).join('\n');
-  const blob = new Blob([txt],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`pedido_${prov}_${today}.txt`; a.click();
-}
+function waProv(prov){ const list=(orders[prov]||[]).map(x=>`${x.qty}\t${x.name}${x.comprado?'  ✔️':''}`).join('\n'); if(!list){ alert('Sin líneas.'); return; } const url='https://wa.me/?text='+encodeURIComponent(list); window.open(url,'_blank'); }
+function exportProvTXT(prov){ const list=orders[prov]||[]; if(!list.length){ alert('No hay líneas para '+prov); return; } const today=new Date().toISOString().split('T')[0]; const txt=list.map(x=> `${x.qty}\t${x.name}${x.comprado?'\tCOMPRADO':''}`).join('\n'); const blob=new Blob([txt],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`pedido_${prov}_${today}.txt`; a.click(); }
 
-/**********************
- *  COMPRAS & REPARTO *
- **********************/
 function renderCompras(){
-  const pend = []; PROVEEDORES.forEach(p=> (orders[p]||[]).forEach(it=>{ if(!it.comprado) pend.push({prov:p, ...it}); }));
-  const pendEl = byId('pendientes_wrap'); if(!pend.length){ pendEl.innerHTML='<div class="hint">No hay pendientes.</div>'; } else { let html='<table><thead><tr><th>Prov</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody>'; pend.forEach(x=>{ html+=`<tr><td>${x.prov}</td><td>${x.name}</td><td>${x.qty}</td></tr>`; }); html+='</tbody></table>'; pendEl.innerHTML=html; }
-
-  const compEl = byId('comprados_wrap'); if(!comprados.length){ compEl.innerHTML='<div class="hint">Sin compras.</div>'; } else { let html='<table><thead><tr><th>Prov</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody>'; comprados.forEach(x=>{ html+=`<tr><td>${x.prov}</td><td>${x.name}</td><td>${x.qty}</td></tr>`; }); html+='</tbody></table>'; compEl.innerHTML=html; }
+  const pend=[]; PROVEEDORES.forEach(p=> (orders[p]||[]).forEach(it=>{ if(!it.comprado) pend.push({prov:p, ...it}); }));
+  const pendEl=byId('pendientes_wrap'); if(!pend.length){ pendEl.innerHTML='<div class="hint">No hay pendientes.</div>'; } else { let html='<table><thead><tr><th>Prov</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody>'; pend.forEach(x=>{ html+=`<tr><td>${x.prov}</td><td>${x.name}</td><td>${x.qty}</td></tr>`; }); html+='</tbody></table>'; pendEl.innerHTML=html; }
+  const compEl=byId('comprados_wrap'); if(!comprados.length){ compEl.innerHTML='<div class="hint">Sin compras.</div>'; } else { let html='<table><thead><tr><th>Prov</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody>'; comprados.forEach(x=>{ html+=`<tr><td>${x.prov}</td><td>${x.name}</td><td>${x.qty}</td></tr>`; }); html+='</tbody></table>'; compEl.innerHTML=html; }
 }
-function moverNoCompradosACompras(){ renderCompras(); alert('Pendientes listados a la izquierda. Marca ✔️ en Proveedores para mover a Comprados.'); }
+function moverNoCompradosACompras(){ renderCompras(); alert('Pendientes actualizados. Marca ✔️ en Proveedores para mover a Comprados.'); }
 function generarReparto(){
-  // Reparto básico: muestra lo comprado por ahora (sin algoritmo de división por tienda)
   const map = new Map();
-  comprados.forEach(x=>{ const k = normKey(x.name); if(!map.has(k)) map.set(k,{name:x.name,total:0}); map.get(k).total += Number(x.qty)||0; });
+  comprados.forEach(x=>{ const k=normKey(x.name); if(!map.has(k)) map.set(k,{name:x.name,total:0}); map.get(k).total += Number(x.qty)||0; });
   let html = '<table><thead><tr><th>Producto</th><th>Total Comprado</th></tr></thead><tbody>';
   Array.from(map.values()).forEach(r=>{ html += `<tr><td>${r.name}</td><td>${r.total}</td></tr>`; });
   html += '</tbody></table>';
   byId('reparto_wrap').innerHTML = html;
 }
 
-/**********************
- *  EXPORT GLOBAL     *
- **********************/
 function copiarGlobal(){ if(!globalRows.length) return; const txt = globalRows.map(r=>`- ${r.total} ${r.name}`).join('\n'); navigator.clipboard.writeText(txt); alert('Lista global copiada.'); }
-function exportarGlobalTXT(){ if(!globalRows.length){ alert('No hay datos.'); return; } const today = new Date().toISOString().split('T')[0]; const txt = globalRows.map(r=>`${r.total}\t${r.name}`).join('\n'); const blob = new Blob([txt],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`lista_global_${today}.txt`; a.click(); }
+function exportarGlobalTXT(){ if(!globalRows.length){ alert('No hay datos.'); return; } const today=new Date().toISOString().split('T')[0]; const txt=globalRows.map(r=>`${r.total}\t${r.name}`).join('\n'); const blob=new Blob([txt],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`lista_global_${today}.txt`; a.click(); }
 function exportarGlobalXLSX(){ if(!globalRows.length){ alert('No hay datos.'); return; } const today=new Date().toISOString().split('T')[0]; const wb=XLSX.utils.book_new(); const ws=XLSX.utils.aoa_to_sheet([["Producto","Total"], ...globalRows.map(r=>[r.name,r.total])]); XLSX.utils.book_append_sheet(wb, ws, 'Global'); XLSX.writeFile(wb, `lista_global_${today}.xlsx`); }
 function generarResumenTXT(){
   const pend=[]; PROVEEDORES.forEach(p=> (orders[p]||[]).forEach(x=>{ if(!x.comprado) pend.push({prov:p,...x}); }));
@@ -809,46 +663,41 @@ function generarResumenTXT(){
   const url = 'https://wa.me/?text='+encodeURIComponent(txt); window.open(url,'_blank');
 }
 
-/**********************
- *  TERMINAR          *
- **********************/
 async function terminarTarea(){
   if(!confirm('Esto limpiará tiendas, global, asignados y compras (el vocabulario se mantiene). ¿Continuar?')) return;
   try{
-    // Limpiar stores
-    tiendaState.sp = []; tiendaState.sl = []; tiendaState.st = [];
+    tiendaState.sp=[]; tiendaState.sl=[]; tiendaState.st=[];
     await sb.from('tiendas').delete().in('tienda',['sp','sl','st']);
     ['sp','sl','st'].forEach(renderTable);
 
-    // Limpiar asignados
     assignments={}; await sb.from('asignados').delete().neq('key','__none__');
 
-    // Limpiar pedidos y comprados
     orders={}; PROVEEDORES.forEach(p=>orders[p]=[]); await sb.from('pedidos').delete().neq('proveedor','__none__');
     comprados=[]; await sb.from('comprados').upsert({id:1, items:[]},{onConflict:'id'});
 
-    // Limpiar UI
     byId('global_wrap').innerHTML=''; buildProvBar(); renderProvidersPanels(); renderCompras();
     alert('Tarea finalizada y sincronizada.');
   }catch(e){ console.warn(e); alert('Se limpió localmente, pero hubo errores al sincronizar.'); }
 }
 
-/**********************
- *  INIT              *
- **********************/
 function bindVocabUI(){
   byId('vocabTxt').addEventListener('input', saveVocabSB);
-  byId('btnAddVocab').onclick = ()=>{ const w = prompt('Nueva palabra:'); if(!w) return; const t=removeDiacriticsUpper(w); const list=uniqueVocab([...(toLines(byId('vocabTxt').value)), t]); byId('vocabTxt').value=list.join('\n'); saveVocabSB(); };
+  byId('btnAddVocab').onclick = ()=>{
+    const w = prompt('Nueva palabra:'); if(!w) return;
+    const t=removeDiacriticsUpper(w);
+    const list=uniqueVocab([...(toLines(byId('vocabTxt').value)), t]);
+    byId('vocabTxt').value=list.join('\n'); saveVocabSB();
+  };
   byId('btnReloadVocab').onclick = ()=> loadVocabFromSB();
   byId('vSearch').addEventListener('input', ()=>{
     const q = normKey(byId('vSearch').value); if(!q){ byId('vocabTxt').value=vocabList.join('\n'); return; }
     const filtered = vocabList.filter(v=> normKey(v).includes(q)); byId('vocabTxt').value = filtered.join('\n');
   });
 }
-function bindWAAll(){ ['sp','sl','st'].forEach(updateWAButton); }
 
 (function init(){
-  buildTabs(); bindVocabUI(); bindWAAll(); sbReady(); buildProvBar(); renderProvidersPanels(); renderCompras();
+  STATUS.textContent='⏳ Conectando…';
+  buildTabs(); bindVocabUI(); sbReady(); buildProvBar(); renderProvidersPanels(); renderCompras();
 })();
 </script>
 </body>
